@@ -1,4 +1,4 @@
-package com.tenant.mytenant.model
+package com.tenant.mytenant.ui.register
 
 import android.os.Parcelable
 import android.text.TextUtils

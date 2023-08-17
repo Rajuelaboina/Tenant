@@ -1,4 +1,4 @@
-package com.tenant.mytenant.viewModel
+package com.tenant.mytenant.ui.billpayment
 
 import android.content.Context
 import androidx.lifecycle.ViewModel

@@ -1,4 +1,4 @@
-package com.tenant.mytenant
+package com.tenant.mytenant.ui.home
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -7,18 +7,17 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.tenant.mytenant.adapter.HomeAdapter
+import com.tenant.mytenant.R
+import com.tenant.mytenant.utils.SwipeToDeleteCallback
 import com.tenant.mytenant.database.UserDataBase
 import com.tenant.mytenant.databinding.FragmentHomeBinding
-import com.tenant.mytenant.model.UserRegistration
+import com.tenant.mytenant.ui.register.UserRegistration
 import com.tenant.mytenant.userlistener.onItemClickListener
-import com.tenant.mytenant.viewModel.HomeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -110,7 +109,7 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
         findNavController().navigate(R.id.action_HomeFragment_to_userPaymentFragment2,bundle)*/
 
         //dialog of payment and power payment
-        MaterialAlertDialogBuilder(requireContext(),R.style.AlertDialogTheme)
+        MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
             .setTitle("Do you want add Payment")
             .setNegativeButton("Rent payment", DialogInterface.OnClickListener { dialog, which ->
                 val bundle = Bundle()

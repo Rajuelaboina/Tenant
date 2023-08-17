@@ -4,7 +4,7 @@
     <data>
         <variable
             name="model"
-            type="com.tenant.mytenant.model.PowerWaterPayment" />
+            type="com.tenant.mytenant.ui.billpayment.PowerWaterPayment" />
     </data>
 
     <androidx.cardview.widget.CardView

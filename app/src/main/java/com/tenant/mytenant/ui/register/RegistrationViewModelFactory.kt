@@ -1,9 +1,8 @@
-package com.tenant.mytenant.viewModel
+package com.tenant.mytenant.ui.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.tenant.mytenant.model.UserRegistration
 import com.tenant.mytenant.userlistener.RegistrationListener
 
 class RegistrationViewModelFactory(var listener:RegistrationListener):ViewModelProvider.NewInstanceFactory() {

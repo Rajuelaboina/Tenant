@@ -1,9 +1,9 @@
 package com.tenant.mytenant.database
 
 import androidx.room.*
-import com.tenant.mytenant.model.Payment
-import com.tenant.mytenant.model.PowerWaterPayment
-import com.tenant.mytenant.model.UserRegistration
+import com.tenant.mytenant.ui.rentpayment.Payment
+import com.tenant.mytenant.ui.billpayment.PowerWaterPayment
+import com.tenant.mytenant.ui.register.UserRegistration
 
 @Dao
 interface UserRegistrationDao {

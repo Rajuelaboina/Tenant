@@ -1,21 +1,23 @@
-package com.tenant.mytenant
+package com.tenant.mytenant.ui.segment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.tenant.mytenant.ui.power.PowerWaterFragment
+import com.tenant.mytenant.R
+import com.tenant.mytenant.ui.fragment.UserPaymentFragment
 import com.tenant.mytenant.databinding.FragmentSegmentBinding
-import com.tenant.mytenant.model.Payment
-import com.tenant.mytenant.model.UserRegistration
-import com.tenant.mytenant.viewModel.SegmentViewModel
+import com.tenant.mytenant.ui.rentpayment.Payment
+import com.tenant.mytenant.ui.register.UserRegistration
 
 
 class SegmentFragment : Fragment() {
     private  var _binding: FragmentSegmentBinding?=null
     private val binding get() = _binding!!
     private lateinit var viewModel: SegmentViewModel
-    private  lateinit var  userRegistration:UserRegistration
+    private  lateinit var  userRegistration: UserRegistration
     private  lateinit var  payment: Payment
     private val bundle = Bundle()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,8 +52,12 @@ class SegmentFragment : Fragment() {
                     loadPaymentRadioData()
                 }
                 R.id.currentBillRadioButton ->{
-                    binding.paymentRadioButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.black))
-                    binding.currentBillRadioButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
+                    binding.paymentRadioButton.setTextColor(ContextCompat.getColor(requireContext(),
+                        R.color.black
+                    ))
+                    binding.currentBillRadioButton.setTextColor(ContextCompat.getColor(requireContext(),
+                        R.color.white
+                    ))
                     val fragment = PowerWaterFragment()
                     fragment.arguments = bundle
                     childFragmentManager.beginTransaction().replace(R.id.content,fragment).addToBackStack(null).commit()
@@ -65,8 +71,12 @@ class SegmentFragment : Fragment() {
         val fragment = UserPaymentFragment()
         fragment.arguments = bundle
         childFragmentManager.beginTransaction().replace(R.id.content,fragment).addToBackStack(null).commit()
-        binding.paymentRadioButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.white))
-        binding.currentBillRadioButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.black))
+        binding.paymentRadioButton.setTextColor(ContextCompat.getColor(requireContext(),
+            R.color.white
+        ))
+        binding.currentBillRadioButton.setTextColor(ContextCompat.getColor(requireContext(),
+            R.color.black
+        ))
 
     }
 

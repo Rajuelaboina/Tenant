@@ -1,32 +1,28 @@
-package com.tenant.mytenant
+package com.tenant.mytenant.ui.fragment
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.Toast
-import androidx.navigation.fragment.findNavController
+import com.tenant.mytenant.R
 import com.tenant.mytenant.database.UserDataBase
 import com.tenant.mytenant.databinding.FragmentPaymentBinding
-import com.tenant.mytenant.model.Payment
-import com.tenant.mytenant.model.UserRegistration
+import com.tenant.mytenant.ui.rentpayment.Payment
+import com.tenant.mytenant.ui.register.UserRegistration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-import java.util.*
 
 
 class UserPaymentFragment : Fragment() {
   private var _binding: FragmentPaymentBinding? = null
   private  val binding get() = _binding!!
 
-    lateinit var  userRegistration:UserRegistration
+    lateinit var  userRegistration: UserRegistration
     lateinit var  payment: Payment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,7 +105,8 @@ class UserPaymentFragment : Fragment() {
     }
 
     private fun onUpDateStatus(b: Boolean) {
-        UserDataBase.getInstance(requireContext()).userDao().getUpdate(UserRegistration(
+        UserDataBase.getInstance(requireContext()).userDao().getUpdate(
+            UserRegistration(
             userRegistration.userName,
             userRegistration.mobileNumber,
             userRegistration.aadharNumber,

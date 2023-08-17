@@ -6,13 +6,13 @@
     <data>
       <variable
           name="viewmodel"
-          type="com.tenant.mytenant.viewModel.HomeViewModel" />
+          type="com.tenant.mytenant.ui.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".HomeFragment">
+        tools:context=".ui.home.HomeFragment">
 
         <LinearLayout
             android:id="@+id/homeLinearLayout"

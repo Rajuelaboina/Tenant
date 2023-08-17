@@ -1,4 +1,4 @@
-package com.tenant.mytenant
+package com.tenant.mytenant.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,9 +6,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
 import androidx.navigation.NavController
+import com.tenant.mytenant.R
 import com.tenant.mytenant.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

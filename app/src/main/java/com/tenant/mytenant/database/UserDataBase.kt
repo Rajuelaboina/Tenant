@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.tenant.mytenant.model.Payment
-import com.tenant.mytenant.model.PowerWaterPayment
-import com.tenant.mytenant.model.UserRegistration
+import com.tenant.mytenant.ui.rentpayment.Payment
+import com.tenant.mytenant.ui.billpayment.PowerWaterPayment
+import com.tenant.mytenant.ui.register.UserRegistration
 
-@Database(entities = [UserRegistration::class,Payment::class,PowerWaterPayment::class], version = 2)
+@Database(entities = [UserRegistration::class, Payment::class, PowerWaterPayment::class], version = 2)
 abstract class UserDataBase:RoomDatabase() {
    abstract fun userDao(): UserRegistrationDao
 

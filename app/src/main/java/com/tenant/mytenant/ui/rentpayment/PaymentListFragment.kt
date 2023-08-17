@@ -1,126 +1,127 @@
-package com.tenant.mytenant
+package com.tenant.mytenant.ui.rentpayment
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.tenant.mytenant.adapter.PowerWaterAdapter
+import com.tenant.mytenant.R
 import com.tenant.mytenant.database.UserDataBase
 import com.tenant.mytenant.databinding.DialogPaymentBinding
-import com.tenant.mytenant.databinding.FragmentPoweWaterListBinding
-import com.tenant.mytenant.model.PowerWaterPayment
-import com.tenant.mytenant.model.UserRegistration
+import com.tenant.mytenant.databinding.FragmentPaymentListBinding
+import com.tenant.mytenant.ui.register.UserRegistration
 import com.tenant.mytenant.userlistener.OnItemClicked
-import com.tenant.mytenant.viewModel.PowerWaterListViewModel
-import com.tenant.mytenant.viewModel.PowerWaterListViewModelFactory
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.util.*
 
 
 @Suppress("DEPRECATION")
-class PowerWaterListFragment : Fragment(), OnItemClicked {
-    private var _binding: FragmentPoweWaterListBinding? =null
-    private val binding get() = _binding!!
-    private  lateinit var  userRegistration:UserRegistration
-    private lateinit var viewModel :PowerWaterListViewModel
+class PaymentListFragment : Fragment(), OnItemClicked {
+
+    private var _binding: FragmentPaymentListBinding? = null
+    private val  binding get() = _binding!!
+    private lateinit var viewModel: PaymentListViewModel
+    private lateinit var  userRegistration: UserRegistration
     private lateinit var dialogPaymentBinding: DialogPaymentBinding
     private  var month = ""
     var mobileNumber = ""
     var year=""
-    var list = ArrayList<PowerWaterPayment>()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View {
+    var list = ArrayList<Payment>()
+    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View {
         // Inflate the layout for this fragment
-        _binding = FragmentPoweWaterListBinding.inflate(inflater, container, false)
-        userRegistration = arguments?.getSerializable("OK") as UserRegistration
-        mobileNumber = userRegistration.mobileNumber
-        viewModel = ViewModelProvider(this,PowerWaterListViewModelFactory(requireContext(),userRegistration.mobileNumber))[PowerWaterListViewModel::class.java]
-        binding.viewModel =viewModel
-        binding.executePendingBindings()
-        PowerWaterAdapter.setOnItemSelected(this)
+         _binding = FragmentPaymentListBinding.inflate(inflater,container,false)
+        viewModel= ViewModelProvider(this)[PaymentListViewModel::class.java]
         return binding.root
     }
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        userRegistration = arguments?.getSerializable("OK") as UserRegistration
+        mobileNumber = userRegistration.mobileNumber
 
+        binding.payListViewModel = viewModel
+        binding.executePendingBindings()
         showAllPaymets()
         year =  Calendar.getInstance().get(Calendar.YEAR).toString()
         //Log.e("year","year: $year")
         binding.textViewMonth.text = "Month & Year"
-        binding.fabPower.setOnClickListener {
-            /*bundle.putSerializable("OK",userRegistration)
-            val fragment = PowerWaterFragment()
-            fragment.arguments = bundle
-            //childFragmentManager.beginTransaction().replace(R.id.content,fragment).addToBackStack(null).commit()
-            findNavController().navigate(R.id.action_powerWaterListFragment_to_powerWaterFragment,bundle)*/
+        binding.fab.setOnClickListener {
             userShowDialog(-1,"Add New")
+            /* val bundle = Bundle()
+            bundle.putSerializable("OK",userRegistration)
+            findNavController().navigate(R.id.action_paymentListFragment_to_userPaymentFragment2,bundle)*/
+
         }
+        //item clicked
+        PaymentListAdapter.setOnItemSelectedListener(this)
     }
 
+
+
     private fun showAllPaymets() {
-        viewModel.getAllPayments()
+        viewModel.getAllPayments(requireContext(),mobileNumber)
         viewModel.list.observe(this) {
-            if (it!=null){
-                list = it as ArrayList<PowerWaterPayment>
+            if (it != null) {
                 viewModel.setAdapter(it)
+                list = it as ArrayList<Payment>
             }
+
         }
     }
 
     override fun onItemClicked(position: Int) {
+       // Log.e("Payment","position: $position}")
         userShowDialog(position,"Update")
+       /* val bundle = Bundle()
+        bundle.putSerializable("OK",userRegistration)
+        bundle.putSerializable("PAYMENT",list[position])
+        findNavController().navigate(R.id.action_paymentListFragment_to_segmentFragment,bundle)*/
+
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun userShowDialog(position: Int, msg: String) {
+    private fun userShowDialog(position: Int,msg:String) {
         dialogPaymentBinding = DialogPaymentBinding.inflate(layoutInflater)
-        // dialog = Dialog(requireContext())
+       // dialog = Dialog(requireContext())
 
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        val alert : AlertDialog = builder.create()
+        val alert :AlertDialog = builder.create()
         alert.setView(dialogPaymentBinding.root)
         alert.setTitle("$msg Payment")
-        dialogPaymentBinding.textView10.text = "Bill amount:"
-        dialogPaymentBinding.textView13.text = "Paid amount:"
-        dialogPaymentBinding.textView14.text = "Due amount:"
-        dialogPaymentBinding.rentPaymentAmount.hint = "power & water bill"
-        dialogPaymentBinding.paidAmount.hint = "power & water bill paid"
-        dialogPaymentBinding.dueAmount.hint = "power & water bill due"
 
+        // set background transparent
+        // dialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        // set view customDialog 2 nd way
+       // dialog.setContentView(dialogPaymentBinding.root)
         var rentAmount: Double
 
         if (position == -1){
-            rentAmount = 0.0
+            rentAmount = userRegistration.rentAmount
             dialogPaymentBinding.rentPaymentAmount.setText(rentAmount.toString().trim())
             dialogPaymentBinding.dueAmount.setText(rentAmount.toString().trim())
-            dialogPaymentBinding.paidAmount.setText(rentAmount.toString().trim())
+            dialogPaymentBinding.paidAmount.setText("0.0")
 
             val indexofmonth = Calendar.getInstance().get(Calendar.MONTH)
             dialogPaymentBinding.spinnerMonth.setSelection(indexofmonth)
         }else{
-            // list edit
-            rentAmount = list[position].powerWaterBill.toDouble()
+            rentAmount = list[position].rentAmount
             dialogPaymentBinding.rentPaymentAmount.setText(rentAmount.toString().trim())
-            dialogPaymentBinding.paidAmount.setText(list[position].powerWaterPaid.trim())
-            dialogPaymentBinding.dueAmount.setText(list[position].powerWaterDue.trim())
+            dialogPaymentBinding.paidAmount.setText(list[position].paidAmount.toString().trim())
+            dialogPaymentBinding.dueAmount.setText(list[position].dueAmount.toString().trim())
             dialogPaymentBinding.rentPaymentAmount.isClickable = false
             dialogPaymentBinding.rentPaymentAmount.isEnabled = false
             val array = resources.getStringArray(R.array.month)
             for (i in array.indices){
-               // Log.e("array","array: $i")
+                Log.e("array","array: $i")
                 if (list[position].month == array[i]){
                     dialogPaymentBinding.spinnerMonth.setSelection(i)
                     dialogPaymentBinding.spinnerMonth.isEnabled = false
@@ -128,10 +129,10 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
                 }
             }
         }
-        //due amount text color change
-        dialogPaymentBinding.dueAmount.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
+        dialogPaymentBinding.dueAmount.setTextColor(ContextCompat.getColor(requireContext(),
+            R.color.red
+        ))
 
-        // select the month
         dialogPaymentBinding.spinnerMonth.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 month = parent?.getItemAtPosition(position).toString()
@@ -140,7 +141,7 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }
-    // editText pay bill amount
+        //edittext
         dialogPaymentBinding.paidAmount.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -151,7 +152,9 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
                     paidAmont = s!!.toString().toDouble()
                     val due = rentAmount.minus(paidAmont)
                     dialogPaymentBinding.dueAmount.setText(due.toString())
-                    dialogPaymentBinding.dueAmount.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
+                    dialogPaymentBinding.dueAmount.setTextColor(ContextCompat.getColor(requireContext(),
+                        R.color.red
+                    ))
                 }else{
                     val due = rentAmount.minus(paidAmont)
                     dialogPaymentBinding.dueAmount.setText(due.toString())
@@ -160,19 +163,19 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
             override fun afterTextChanged(s: Editable?) {
             }
         })
-      // save the bill
+        //save btn
         dialogPaymentBinding.savePayment.setOnClickListener {
 
-            CoroutineScope(Dispatchers.IO).launch {
-                val bb= UserDataBase.getInstance(requireContext()).userDao().isRecordExistsPowerBill(month,year,mobileNumber)
+            CoroutineScope(IO).launch {
+                val bb= UserDataBase.getInstance(requireContext()).userDao().isRecordExistsUserId(month,year,mobileNumber)
                 //Log.e("room","bb: $bb")
                 if (position==-1){
                     if (!bb) {
-                        UserDataBase.getInstance(requireContext()).userDao().insertPowerWaterPayment(
-                            PowerWaterPayment(0, month,year, mobileNumber,
-                                dialogPaymentBinding.rentPaymentAmount.text.toString(),
-                                dialogPaymentBinding.paidAmount.text.toString(),
-                                dialogPaymentBinding.dueAmount.text.toString())
+                        UserDataBase.getInstance(requireContext()).userDao().insertPayment(
+                            Payment(0, month,year, mobileNumber,
+                                dialogPaymentBinding.rentPaymentAmount.text.toString().toDouble(),
+                                dialogPaymentBinding.paidAmount.text.toString().toDouble(),
+                                dialogPaymentBinding.dueAmount.text.toString().toDouble())
                         )
                         refreshData("Payment save successfully")
                     }else{
@@ -180,28 +183,45 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
                     }
 
                 }else{
-                    UserDataBase.getInstance(requireContext()).userDao().powerBillUpdate(
-                        PowerWaterPayment(list[position].id, month,year, mobileNumber,
-                            dialogPaymentBinding.rentPaymentAmount.text.toString(),
-                            dialogPaymentBinding.paidAmount.text.toString(),
-                            dialogPaymentBinding.dueAmount.text.toString())
+                    UserDataBase.getInstance(requireContext()).userDao().paymentUpdate(
+                        Payment(list[position].id, month,year, mobileNumber,
+                            dialogPaymentBinding.rentPaymentAmount.text.toString().toDouble(),
+                            dialogPaymentBinding.paidAmount.text.toString().toDouble(),
+                            dialogPaymentBinding.dueAmount.text.toString().toDouble())
                     )
                     refreshData("Payment updated successfully")
                 }
-
+                if (dialogPaymentBinding.dueAmount.text.toString() == "0.0"){
+                    userStatusUpdate(false)
+                }else{
+                   userStatusUpdate(true)
+                }
             }
             alert.dismiss()
         }
-
         alert.show()
-
     }
+
     private fun refreshData(message:String) {
         requireActivity().runOnUiThread {
-            showAllPaymets()
             Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-
+            showAllPaymets()
         }
     }
+   // update user status
+   private fun userStatusUpdate(boolean: Boolean){
+       CoroutineScope(IO).launch {
+           UserDataBase.getInstance(requireContext()).userDao().getUpdate(
+               UserRegistration(
+               userRegistration.userName,
+               userRegistration.mobileNumber,
+               userRegistration.aadharNumber,
+               userRegistration.roomNumber,
+               userRegistration.rentAmount,
+               userRegistration.joinDate,boolean
+           )
+           )
+       }
 
+    }
 }

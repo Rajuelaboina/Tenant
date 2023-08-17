@@ -1,26 +1,19 @@
-package com.tenant.mytenant
+package com.tenant.mytenant.ui.power
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.tenant.mytenant.R
 import com.tenant.mytenant.databinding.FragmentPowerWaterBinding
-import com.tenant.mytenant.model.Payment
-import com.tenant.mytenant.model.UserRegistration
+import com.tenant.mytenant.ui.register.UserRegistration
 import com.tenant.mytenant.userlistener.powerBillSelectedListener
-import com.tenant.mytenant.viewModel.PowerWaterViewModel
-import com.tenant.mytenant.viewModel.PowerWaterViewModelFactory
 import java.util.*
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class PowerWaterFragment : Fragment(), powerBillSelectedListener {
     // TODO: Rename and change types of parameters
@@ -31,7 +24,7 @@ class PowerWaterFragment : Fragment(), powerBillSelectedListener {
     var due:Double? = null
     lateinit var year:String
     lateinit var month:String
-    private  lateinit var  userRegistration:UserRegistration
+    private  lateinit var  userRegistration: UserRegistration
 
     lateinit var viewModel: PowerWaterViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,12 +32,15 @@ class PowerWaterFragment : Fragment(), powerBillSelectedListener {
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentPowerWaterBinding.inflate(inflater,container,false)
+        _binding = FragmentPowerWaterBinding.inflate(inflater, container, false)
         userRegistration = arguments?.getSerializable("OK") as UserRegistration
 
-        viewModel = ViewModelProvider(this,PowerWaterViewModelFactory(this,requireContext(),userRegistration.mobileNumber))[PowerWaterViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            PowerWaterViewModelFactory(this, requireContext(), userRegistration.mobileNumber)
+        )[PowerWaterViewModel::class.java]
         binding.viewModel =viewModel
         binding.executePendingBindings()
          return binding.root
@@ -107,7 +103,7 @@ class PowerWaterFragment : Fragment(), powerBillSelectedListener {
     override fun onPaidListener(due: Double) {
         var paidAmount = 0.0
         binding.dueAmount.setText(due.toString())
-        binding.dueAmount.setTextColor(ContextCompat.getColor(requireContext(),R.color.red))
+        binding.dueAmount.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
       /*  if (!s.isEmpty()){
             billAmount = binding.powerWaterPaymentAmount.text.toString().trim().toDouble()
             paidAmount = s.trim().toDouble()

@@ -1,4 +1,4 @@
-package com.tenant.mytenant.viewModel
+package com.tenant.mytenant.ui.segment
 
 import android.util.Log
 import android.view.View

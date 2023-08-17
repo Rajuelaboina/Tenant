@@ -1,4 +1,4 @@
-package com.tenant.mytenant
+package com.tenant.mytenant.ui.register
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -10,12 +10,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.tenant.mytenant.R
 import com.tenant.mytenant.database.UserDataBase
 import com.tenant.mytenant.databinding.FragmentRegistrationBinding
-import com.tenant.mytenant.model.UserRegistration
 import com.tenant.mytenant.userlistener.RegistrationListener
-import com.tenant.mytenant.viewModel.RegistrationViewModel
-import com.tenant.mytenant.viewModel.RegistrationViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -36,7 +34,7 @@ class RegistrationFragment : Fragment(), RegistrationListener {
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
         _binding = FragmentRegistrationBinding.inflate(inflater, container, false)
-        binding.viewModel = ViewModelProvider(this,RegistrationViewModelFactory(this))[RegistrationViewModel::class.java]
+        binding.viewModel = ViewModelProvider(this, RegistrationViewModelFactory(this))[RegistrationViewModel::class.java]
 
         return binding.root
 
@@ -90,7 +88,8 @@ class RegistrationFragment : Fragment(), RegistrationListener {
                   binding.editTextAadharNumber.text.toString().trim(),
                   binding.editTextRentRoomNumber.text.toString().trim(),
                   binding.editTextRentAmount.text.toString().trim().toDouble(),
-                  binding.editTextJoinDate.text.toString().trim(),false))
+                  binding.editTextJoinDate.text.toString().trim(),false)
+              )
               // val user= UserDataBase.getInstance(requireContext()).userDao().getAllUsers()
                // Log.e("data",""+user.size)
             }

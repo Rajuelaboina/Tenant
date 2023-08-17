@@ -5,14 +5,14 @@
     <data>
        <variable
            name="viewModel"
-           type="com.tenant.mytenant.viewModel.SegmentViewModel" />
+           type="com.tenant.mytenant.ui.segment.SegmentViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".SegmentFragment">
+        tools:context=".ui.segment.SegmentFragment">
 
         <LinearLayout
             android:layout_width="match_parent"

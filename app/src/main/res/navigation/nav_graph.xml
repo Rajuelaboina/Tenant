@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/HomeFragment"
-        android:name="com.tenant.mytenant.HomeFragment"
+        android:name="com.tenant.mytenant.ui.home.HomeFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_home">
 
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/RegistrationFragment"
-        android:name="com.tenant.mytenant.RegistrationFragment"
+        android:name="com.tenant.mytenant.ui.register.RegistrationFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_registration">
 
@@ -34,7 +34,7 @@
     </fragment>
    <!-- <fragment
         android:id="@+id/userPaymentFragment2"
-        android:name="com.tenant.mytenant.UserPaymentFragment"
+        android:name="com.tenant.mytenant.ui.fragment.UserPaymentFragment"
         android:label="fragment_payment"
         tools:layout="@layout/fragment_payment" >
       &lt;!&ndash;  <action
@@ -46,7 +46,7 @@
     </fragment>-->
     <fragment
         android:id="@+id/paymentListFragment"
-        android:name="com.tenant.mytenant.PaymentListFragment"
+        android:name="com.tenant.mytenant.ui.rentpayment.PaymentListFragment"
         android:label="@string/tenant_payment"
         tools:layout="@layout/fragment_payment_list">
        <!-- <action
@@ -58,11 +58,11 @@
     </fragment>
     <fragment
         android:id="@+id/segmentFragment"
-        android:name="com.tenant.mytenant.SegmentFragment"
+        android:name="com.tenant.mytenant.ui.segment.SegmentFragment"
         android:label="SegmentFragment" />
     <fragment
         android:id="@+id/powerWaterListFragment"
-        android:name="com.tenant.mytenant.PowerWaterListFragment"
+        android:name="com.tenant.mytenant.ui.billpayment.PowerWaterListFragment"
         android:label="PoweWaterListFragment" >
         <action
             android:id="@+id/action_powerWaterListFragment_to_powerWaterFragment"
@@ -70,7 +70,7 @@
     </fragment>
     <fragment
         android:id="@+id/powerWaterFragment"
-        android:name="com.tenant.mytenant.PowerWaterFragment"
+        android:name="com.tenant.mytenant.ui.power.PowerWaterFragment"
         android:label="PowerWaterFragment" >
         <action
             android:id="@+id/action_powerWaterFragment_to_powerWaterListFragment"

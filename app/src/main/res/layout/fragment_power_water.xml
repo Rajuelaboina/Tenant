@@ -6,14 +6,14 @@
     <data>
          <variable
              name="viewModel"
-             type="com.tenant.mytenant.viewModel.PowerWaterViewModel" />
+             type="com.tenant.mytenant.ui.power.PowerWaterViewModel" />
     </data>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".UserPaymentFragment"
+        tools:context=".ui.fragment.UserPaymentFragment"
         android:padding="8dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"

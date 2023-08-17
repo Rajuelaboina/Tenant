@@ -1,4 +1,4 @@
-package com.tenant.mytenant.adapter
+package com.tenant.mytenant.ui.billpayment
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tenant.mytenant.R
 import com.tenant.mytenant.databinding.PowerItemBinding
-import com.tenant.mytenant.model.PowerWaterPayment
 import com.tenant.mytenant.userlistener.OnItemClicked
 
 class PowerWaterAdapter: RecyclerView.Adapter<PowerWaterAdapter.MyViewHolder>() {
@@ -41,7 +40,7 @@ class PowerWaterAdapter: RecyclerView.Adapter<PowerWaterAdapter.MyViewHolder>() 
     companion object{
         lateinit var listener: OnItemClicked
         fun setOnItemSelected(listener:OnItemClicked){
-            this.listener = listener
+            Companion.listener = listener
         }
     }
 }

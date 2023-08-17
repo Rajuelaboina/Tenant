@@ -5,7 +5,7 @@
 
         <variable
             name="model"
-            type="com.tenant.mytenant.model.Payment" />
+            type="com.tenant.mytenant.ui.rentpayment.Payment" />
     </data>
 
     <androidx.cardview.widget.CardView

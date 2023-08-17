@@ -1,11 +1,10 @@
-package com.tenant.mytenant.viewModel
+package com.tenant.mytenant.ui.home
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tenant.mytenant.adapter.HomeAdapter
 import com.tenant.mytenant.database.UserDataBase
-import com.tenant.mytenant.model.UserRegistration
+import com.tenant.mytenant.ui.register.UserRegistration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -21,7 +20,7 @@ class HomeViewModel:ViewModel() {
     fun setAdapter(userList: List<UserRegistration>) {
            adapter.updateList(userList)
     }
-    fun getHomeAdapter():HomeAdapter{
+    fun getHomeAdapter(): HomeAdapter {
       return adapter
     }
 }

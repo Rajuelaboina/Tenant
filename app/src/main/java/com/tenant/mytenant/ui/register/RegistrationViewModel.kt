@@ -1,11 +1,10 @@
-package com.tenant.mytenant.viewModel
+package com.tenant.mytenant.ui.register
 
 import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.lifecycle.ViewModel
-import com.tenant.mytenant.model.UserRegistration
 import com.tenant.mytenant.userlistener.RegistrationListener
 
 class RegistrationViewModel(var listener: RegistrationListener): ViewModel() {

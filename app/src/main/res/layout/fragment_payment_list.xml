@@ -6,13 +6,13 @@
     <data>
         <variable
             name="payListViewModel"
-            type="com.tenant.mytenant.viewModel.PaymentListViewModel" />
+            type="com.tenant.mytenant.ui.rentpayment.PaymentListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".PaymentListFragment">
+        tools:context=".ui.rentpayment.PaymentListFragment">
 
         <!-- TODO: Update blank fragment layout -->
         <LinearLayout

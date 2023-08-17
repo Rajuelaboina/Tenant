@@ -1,11 +1,12 @@
-package com.tenant.mytenant.model
+package com.tenant.mytenant.ui.rentpayment
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
-@Entity(tableName = "powerWaterBill")
-data class PowerWaterPayment(
+@Entity(tableName = "rentPayment")
+data class Payment(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Int,
@@ -15,11 +16,11 @@ data class PowerWaterPayment(
     var year: String,
     @ColumnInfo(name = "mobileNumber")
     var mobileNumber: String,
-    @ColumnInfo(name = "powerWaterBill")
-    var powerWaterBill: String,
-    @ColumnInfo(name = "powerWaterPaid")
-    var powerWaterPaid: String,
-    @ColumnInfo(name = "powerWaterDue")
-    var powerWaterDue: String
+    @ColumnInfo(name = "rentAmount")
+    var rentAmount: Double,
+    @ColumnInfo(name = "paidAmount")
+    var paidAmount: Double,
+    @ColumnInfo(name = "dueAmount")
+    var dueAmount: Double
 
-)
+) : Serializable

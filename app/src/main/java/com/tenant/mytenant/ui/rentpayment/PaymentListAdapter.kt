@@ -1,4 +1,4 @@
-package com.tenant.mytenant.adapter
+package com.tenant.mytenant.ui.rentpayment
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tenant.mytenant.R
 import com.tenant.mytenant.databinding.PaymentlistItemBinding
-import com.tenant.mytenant.model.Payment
 import com.tenant.mytenant.userlistener.OnItemClicked
 
 class PaymentListAdapter : RecyclerView.Adapter<PaymentListAdapter.MyViewHolder>() {
@@ -52,7 +51,7 @@ class PaymentListAdapter : RecyclerView.Adapter<PaymentListAdapter.MyViewHolder>
     companion object{
         lateinit var myListener: OnItemClicked
         fun setOnItemSelectedListener(listener : OnItemClicked){
-            this.myListener=listener
+            myListener =listener
         }
     }
 }

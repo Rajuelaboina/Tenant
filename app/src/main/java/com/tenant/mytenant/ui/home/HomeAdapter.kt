@@ -1,7 +1,6 @@
-package com.tenant.mytenant.adapter
+package com.tenant.mytenant.ui.home
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.tenant.mytenant.R
 import com.tenant.mytenant.databinding.HomeItemBinding
-import com.tenant.mytenant.model.UserRegistration
+import com.tenant.mytenant.ui.register.UserRegistration
 import com.tenant.mytenant.userlistener.onItemClickListener
 
 class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
@@ -51,7 +50,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
    companion object{
        lateinit var myListener: onItemClickListener
        fun setOnItemSelectedListener(listener : onItemClickListener){
-          this.myListener=listener
+          myListener =listener
        }
    }
 }

@@ -1,11 +1,9 @@
-package com.tenant.mytenant.viewModel
+package com.tenant.mytenant.ui.rentpayment
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tenant.mytenant.adapter.PaymentListAdapter
 import com.tenant.mytenant.database.UserDataBase
-import com.tenant.mytenant.model.Payment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -22,7 +20,7 @@ class PaymentListViewModel:ViewModel() {
     fun setAdapter(userList: List<Payment>) {
            adapter.updateList(userList)
     }
-    fun getAdapter():PaymentListAdapter{
+    fun getAdapter(): PaymentListAdapter {
       return adapter
     }
 }

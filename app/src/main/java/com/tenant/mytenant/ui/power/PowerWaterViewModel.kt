@@ -1,4 +1,4 @@
-package com.tenant.mytenant.viewModel
+package com.tenant.mytenant.ui.power
 
 import android.content.Context
 import android.text.Editable
@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.ViewModel
 import com.tenant.mytenant.R
 import com.tenant.mytenant.database.UserDataBase
-import com.tenant.mytenant.model.PowerWaterPayment
+import com.tenant.mytenant.ui.billpayment.PowerWaterPayment
 import com.tenant.mytenant.userlistener.powerBillSelectedListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
