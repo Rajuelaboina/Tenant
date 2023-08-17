@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+       <variable
+           name="viewModel"
+           type="com.tenant.mytenant.viewModel.RegistrationViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".RegistrationFragment">
+
+        <EditText
+            android:id="@+id/editTextTextPersonName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="textCapSentences"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:addTextChangedListener="@{viewModel.userNameTextWatcher}"/>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="36dp"
+            android:text="Tanant Registration Form"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="90dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="90dp" />
+
+        <EditText
+            android:id="@+id/editTextMobileNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Mobile number"
+            android:inputType="phone"
+            android:maxLength="10"
+            app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName"
+            app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+            app:addTextChangedListener="@{viewModel.mobileNumberTextWatcher}"/>
+
+        <EditText
+            android:id="@+id/editTextAadharNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Aadhar number"
+            android:inputType="number"
+            android:maxLength="12"
+            app:layout_constraintEnd_toEndOf="@+id/editTextMobileNumber"
+            app:layout_constraintStart_toStartOf="@+id/editTextMobileNumber"
+            app:layout_constraintTop_toBottomOf="@+id/editTextMobileNumber"
+            app:addTextChangedListener="@{viewModel.aadharNumberTextWatcher}"/>
+
+        <EditText
+            android:id="@+id/editTextRentRoomNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Room number"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="@+id/editTextAadharNumber"
+            app:layout_constraintStart_toStartOf="@+id/editTextAadharNumber"
+            app:layout_constraintTop_toBottomOf="@+id/editTextAadharNumber"
+            app:addTextChangedListener="@{viewModel.roomNumberTextWatcher}"/>
+
+        <EditText
+            android:id="@+id/editTextRentAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Rent amount"
+            android:inputType="number"
+            app:layout_constraintEnd_toEndOf="@+id/editTextRentRoomNumber"
+            app:layout_constraintStart_toStartOf="@+id/editTextRentRoomNumber"
+            app:layout_constraintTop_toBottomOf="@+id/editTextRentRoomNumber"
+            app:addTextChangedListener="@{viewModel.rentAmountTextWatcher}"/>
+
+        <EditText
+            android:id="@+id/editTextJoinDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Join Date"
+            android:inputType="date"
+             app:layout_constraintEnd_toEndOf="@+id/editTextRentAmount"
+            app:layout_constraintStart_toStartOf="@+id/editTextRentAmount"
+            app:layout_constraintTop_toBottomOf="@+id/editTextRentAmount"
+            android:onClick="@{viewModel::editOnClick}"
+            android:focusableInTouchMode="true"
+            android:cursorVisible="false"
+            android:focusable="false"
+            app:addTextChangedListener="@{viewModel.joiningDateTextWatcher}"/>
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="47dp"
+            android:layout_marginEnd="47dp"
+            android:text="Save"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/editTextJoinDate"
+            app:layout_constraintTop_toBottomOf="@+id/editTextJoinDate"
+            android:onClick="@{viewModel::onClicked}"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

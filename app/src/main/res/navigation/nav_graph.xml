@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/HomeFragment">
+
+    <fragment
+        android:id="@+id/HomeFragment"
+        android:name="com.tenant.mytenant.HomeFragment"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_HomeFragment_to_RegistrationFragment"
+            app:destination="@id/RegistrationFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_userPaymentFragment2"
+            app:destination="@id/paymentListFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_poweWaterListFragment"
+            app:destination="@id/powerWaterListFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/RegistrationFragment"
+        android:name="com.tenant.mytenant.RegistrationFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_registration">
+
+        <action
+            android:id="@+id/action_SecondFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />
+    </fragment>
+   <!-- <fragment
+        android:id="@+id/userPaymentFragment2"
+        android:name="com.tenant.mytenant.UserPaymentFragment"
+        android:label="fragment_payment"
+        tools:layout="@layout/fragment_payment" >
+      &lt;!&ndash;  <action
+            android:id="@+id/action_SecondFragment_to_HomeFragment"
+            app:destination="@id/HomeFragment" />&ndash;&gt;
+        <action
+            android:id="@+id/action_userPaymentFragment2_to_paymentListFragment"
+            app:destination="@id/paymentListFragment" />
+    </fragment>-->
+    <fragment
+        android:id="@+id/paymentListFragment"
+        android:name="com.tenant.mytenant.PaymentListFragment"
+        android:label="@string/tenant_payment"
+        tools:layout="@layout/fragment_payment_list">
+       <!-- <action
+            android:id="@+id/action_paymentListFragment_to_userPaymentFragment2"
+            app:destination="@id/userPaymentFragment2" />-->
+        <action
+            android:id="@+id/action_paymentListFragment_to_segmentFragment"
+            app:destination="@id/segmentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/segmentFragment"
+        android:name="com.tenant.mytenant.SegmentFragment"
+        android:label="SegmentFragment" />
+    <fragment
+        android:id="@+id/powerWaterListFragment"
+        android:name="com.tenant.mytenant.PowerWaterListFragment"
+        android:label="PoweWaterListFragment" >
+        <action
+            android:id="@+id/action_powerWaterListFragment_to_powerWaterFragment"
+            app:destination="@id/powerWaterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/powerWaterFragment"
+        android:name="com.tenant.mytenant.PowerWaterFragment"
+        android:label="PowerWaterFragment" >
+        <action
+            android:id="@+id/action_powerWaterFragment_to_powerWaterListFragment"
+            app:destination="@id/powerWaterListFragment" />
+    </fragment>
+</navigation>
