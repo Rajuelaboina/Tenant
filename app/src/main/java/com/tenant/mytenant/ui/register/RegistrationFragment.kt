@@ -17,6 +17,7 @@ import com.tenant.mytenant.userlistener.RegistrationListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -31,7 +32,7 @@ class RegistrationFragment : Fragment(), RegistrationListener {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
+    var date =""
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
         _binding = FragmentRegistrationBinding.inflate(inflater, container, false)
         binding.viewModel = ViewModelProvider(this, RegistrationViewModelFactory(this))[RegistrationViewModel::class.java]
@@ -88,7 +89,7 @@ class RegistrationFragment : Fragment(), RegistrationListener {
                   binding.editTextAadharNumber.text.toString().trim(),
                   binding.editTextRentRoomNumber.text.toString().trim(),
                   binding.editTextRentAmount.text.toString().trim().toDouble(),
-                  binding.editTextJoinDate.text.toString().trim(),false)
+                  date,false)
               )
               // val user= UserDataBase.getInstance(requireContext()).userDao().getAllUsers()
                // Log.e("data",""+user.size)
@@ -120,6 +121,18 @@ class RegistrationFragment : Fragment(), RegistrationListener {
             requireContext(),
             { view, year, monthOfYear, dayOfMonth -> // on below line we are setting date to our edit text.
                 binding.editTextJoinDate.setText(dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
+                var cal = Calendar.getInstance()
+                cal.set(Calendar.YEAR, year)
+                cal.set(Calendar.MONTH, monthOfYear)
+                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+
+                val sdf = SimpleDateFormat("dd-MM-yyyy")
+
+                date = sdf.format(cal.time)
+                Log.e("picker","$date")
+
+
             },  // on below line we are passing year,
             // month and day for selected date in our date picker.
             year, month, day

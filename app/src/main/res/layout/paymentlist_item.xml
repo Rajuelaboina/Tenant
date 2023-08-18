@@ -25,11 +25,11 @@
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{model.month}"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:textSize="15sp"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:text="@{model.month.substring(0,3)+' '+ '-'+ ' ' +model.year}"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/textView3"
