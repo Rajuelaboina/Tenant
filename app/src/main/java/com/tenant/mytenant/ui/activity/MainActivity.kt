@@ -47,10 +47,10 @@ class MainActivity : AppCompatActivity() {
         // calendar.set(Calendar.MONTH,7)
         //  calendar.set(Calendar.DAY_OF_MONTH,18)
         calendar.set(Calendar.HOUR_OF_DAY,7)
-        calendar.set(Calendar.MINUTE,35)
+        calendar.set(Calendar.MINUTE,58)
         calendar.set(Calendar.SECOND,0)
         calendar.set(Calendar.MILLISECOND, 0)
-        calendar.set(Calendar.AM_PM, Calendar.AM)
+        calendar.set(Calendar.AM_PM, Calendar.PM)
 
         val i: Int = 50
         val intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         if (alarmMgr != null) {
             // alarmMgr.setExact(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + (i * 1000), pendingIntent)
             // alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP,AlarmManager.INTERVAL_DAY,calendar.getTimeInMillis(), pendingIntent)
-            alarmMgr.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent)
+            alarmMgr.setExact(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent)
         }
 
         Toast.makeText(applicationContext, "Alarm set in $i seconds", Toast.LENGTH_LONG).show()
