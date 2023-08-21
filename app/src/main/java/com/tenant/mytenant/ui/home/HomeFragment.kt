@@ -1,9 +1,15 @@
 package com.tenant.mytenant.ui.home
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -13,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.tenant.mytenant.MyBroadcastReceiver
 import com.tenant.mytenant.R
 import com.tenant.mytenant.database.UserDataBase
 import com.tenant.mytenant.databinding.FragmentHomeBinding
@@ -22,16 +29,14 @@ import com.tenant.mytenant.utils.SwipeToDeleteCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
-import java.util.logging.SimpleFormatter
 
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
-
+    lateinit var date:Date
     private var _binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
 
@@ -86,6 +91,27 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+
+
+
+
+
+    /* val dateArray: Array<String> = date.split("/")
+
+        val day = dateArray[0].toInt()
+        val month = dateArray[1].toInt()
+        val year = dateArray[2].toInt()
+
+        val calendar = Calendar.getInstance()
+        calendar[Calendar.DAY_OF_MONTH] = day
+        calendar[Calendar.MONTH] = month
+        calendar[Calendar.YEAR] = year
+
+
+        val time = calendar.timeInMillis
+
+        return Date(time)*/
+
     }
 
     private fun DisplayAllUsers() {
@@ -97,6 +123,47 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
                 userList = it
                 viewModel.setAdapter(it)
             }
+          /* it.forEach {
+               val items1: Array<String> = it.split("-")
+               val year = items1[0].toInt()
+               val month = items1[1].toInt()
+               val day = items1[2].toInt()
+           }*/
+            val cal = Calendar.getInstance()
+            val cal2 = Calendar.getInstance()
+            val smpl = SimpleDateFormat("dd-M-yyyy")
+            val smpl2 = SimpleDateFormat("dd-M-yyyy")
+            var inActiveDate: Date? = null
+            var date1 :Date
+            var date2 :Date
+            for (i in it.indices){
+                val items1: List<String> = it[i].joinDate.split("-")
+                val day = items1[0].toInt()
+                val month = items1[1].toInt()
+                val year = items1[2].toInt()
+               /* Log.e("split date",""+year)
+                Log.e("split date",""+month)
+                Log.e("split date",""+day)*/
+                cal.set(Calendar.YEAR,year)
+                cal.set(Calendar.MONTH,month)
+                cal.set(Calendar.DAY_OF_MONTH,day)
+                date1 = cal.time
+               // Log.e("Db Date>>>>>>>","DB Date: $date1")
+                date2 =cal2.time
+               // Log.e("Db Date>>>>>>>","DB Date: $date2")
+               // Log.e("Current>>>>>>>","current Date: ${smpl.format(date2)}")
+
+
+               /* if (date1.before(date2)){
+                    Log.e("before>>>>>>>","before")
+                }else if (date1.after(date2)){
+                    Log.e("after>>>>>>>","after")
+                }else{
+                    Log.e("same>>>>>>>","same")
+                }*/
+
+            }
+
         }
     }
 

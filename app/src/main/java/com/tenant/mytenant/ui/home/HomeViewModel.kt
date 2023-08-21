@@ -16,6 +16,7 @@ class HomeViewModel:ViewModel() {
         CoroutineScope(IO).launch {
            list.postValue( UserDataBase.getInstance(context).userDao().getAllUsers())
         }
+
     }
     fun setAdapter(userList: List<UserRegistration>) {
            adapter.updateList(userList)

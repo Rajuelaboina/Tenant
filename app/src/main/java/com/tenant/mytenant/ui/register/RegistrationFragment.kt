@@ -126,13 +126,9 @@ class RegistrationFragment : Fragment(), RegistrationListener {
                 cal.set(Calendar.MONTH, monthOfYear)
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-
                 val sdf = SimpleDateFormat("dd-MM-yyyy")
-
                 date = sdf.format(cal.time)
-                Log.e("picker","$date")
-
-
+               // Log.e("picker","$date")
             },  // on below line we are passing year,
             // month and day for selected date in our date picker.
             year, month, day

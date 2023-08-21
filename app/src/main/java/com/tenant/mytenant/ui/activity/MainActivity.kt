@@ -1,14 +1,21 @@
 package com.tenant.mytenant.ui.activity
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.NavController
+import com.tenant.mytenant.MyBroadcastReceiver
 import com.tenant.mytenant.R
 import com.tenant.mytenant.databinding.ActivityMainBinding
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,6 +39,32 @@ class MainActivity : AppCompatActivity() {
 //                .setAction("Action", null).show()
 
         }*/
+
+        /*var alarmMgr: AlarmManager? = null
+        alarmMgr = context?.getSystemService(Context.ALARM_SERVICE) as? AlarmManager?*/
+        val calendar = Calendar.getInstance()
+        // calendar.set(Calendar.YEAR,2023)
+        // calendar.set(Calendar.MONTH,7)
+        //  calendar.set(Calendar.DAY_OF_MONTH,18)
+        calendar.set(Calendar.HOUR_OF_DAY,7)
+        calendar.set(Calendar.MINUTE,35)
+        calendar.set(Calendar.SECOND,0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        calendar.set(Calendar.AM_PM, Calendar.AM)
+
+        val i: Int = 50
+        val intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            applicationContext.applicationContext, 0, intent, PendingIntent.FLAG_MUTABLE)
+        var alarmMgr: AlarmManager? = null
+        alarmMgr = applicationContext?.getSystemService(Context.ALARM_SERVICE) as? AlarmManager?
+        if (alarmMgr != null) {
+            // alarmMgr.setExact(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + (i * 1000), pendingIntent)
+            // alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP,AlarmManager.INTERVAL_DAY,calendar.getTimeInMillis(), pendingIntent)
+            alarmMgr.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pendingIntent)
+        }
+
+        Toast.makeText(applicationContext, "Alarm set in $i seconds", Toast.LENGTH_LONG).show()
     }
 
    /* override fun onCreateOptionsMenu(menu: Menu): Boolean {
