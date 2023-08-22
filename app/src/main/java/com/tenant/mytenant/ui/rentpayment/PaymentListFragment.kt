@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.tenant.mytenant.R
 import com.tenant.mytenant.database.UserDataBase
 import com.tenant.mytenant.databinding.DialogPaymentBinding
@@ -46,6 +47,7 @@ class PaymentListFragment : Fragment(), OnItemClicked {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.listpaymentLinear.visibility = View.INVISIBLE
         userRegistration = arguments?.getSerializable("OK") as UserRegistration
         mobileNumber = userRegistration.mobileNumber
 
@@ -56,7 +58,8 @@ class PaymentListFragment : Fragment(), OnItemClicked {
         //Log.e("year","year: $year")
         binding.textViewMonth.text = "Month & Year"
         binding.fab.setOnClickListener {
-            userShowDialog(-1,"Add New")
+           // userShowDialog(-1,"Add New")
+            showBottomSheetDialog(-1,"Add New")
             /* val bundle = Bundle()
             bundle.putSerializable("OK",userRegistration)
             findNavController().navigate(R.id.action_paymentListFragment_to_userPaymentFragment2,bundle)*/
@@ -71,9 +74,14 @@ class PaymentListFragment : Fragment(), OnItemClicked {
     private fun showAllPaymets() {
         viewModel.getAllPayments(requireContext(),mobileNumber)
         viewModel.list.observe(this) {
-            if (it != null) {
+            if (it.isNotEmpty()) {
+                binding.textViewNotFound.visibility = View.INVISIBLE
+                binding.listpaymentLinear.visibility = View.VISIBLE
                 viewModel.setAdapter(it)
                 list = it as ArrayList<Payment>
+            }else{
+
+                binding.textViewNotFound.visibility = View.VISIBLE
             }
 
         }
@@ -81,15 +89,18 @@ class PaymentListFragment : Fragment(), OnItemClicked {
 
     override fun onItemClicked(position: Int) {
        // Log.e("Payment","position: $position}")
-        userShowDialog(position,"Update")
+        //userShowDialog(position,"Update")
+        showBottomSheetDialog(position,"Update")
        /* val bundle = Bundle()
         bundle.putSerializable("OK",userRegistration)
         bundle.putSerializable("PAYMENT",list[position])
         findNavController().navigate(R.id.action_paymentListFragment_to_segmentFragment,bundle)*/
 
+
+
     }
 
-    private fun userShowDialog(position: Int,msg:String) {
+    /* private fun userShowDialog(position: Int,msg:String) {
         dialogPaymentBinding = DialogPaymentBinding.inflate(layoutInflater)
        // dialog = Dialog(requireContext())
 
@@ -97,6 +108,8 @@ class PaymentListFragment : Fragment(), OnItemClicked {
         val alert :AlertDialog = builder.create()
         alert.setView(dialogPaymentBinding.root)
         alert.setTitle("$msg Payment")
+
+
 
         // set background transparent
         // dialog.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -200,6 +213,112 @@ class PaymentListFragment : Fragment(), OnItemClicked {
             alert.dismiss()
         }
         alert.show()
+    }*/
+
+    private fun showBottomSheetDialog(position: Int,msg:String){
+        val alertDialog = BottomSheetDialog(requireContext(),R.style.BottomSheetDialogStyle)
+        dialogPaymentBinding = DialogPaymentBinding.inflate(layoutInflater)
+        alertDialog.setContentView(dialogPaymentBinding.root)
+
+        var rentAmount: Double
+
+        if (position == -1){
+            rentAmount = userRegistration.rentAmount
+            dialogPaymentBinding.rentPaymentAmount.setText(rentAmount.toString().trim())
+            dialogPaymentBinding.dueAmount.setText(rentAmount.toString().trim())
+            dialogPaymentBinding.paidAmount.setText("0.0")
+
+            val indexofmonth = Calendar.getInstance().get(Calendar.MONTH)
+            dialogPaymentBinding.spinnerMonth.setSelection(indexofmonth)
+        }else{
+            rentAmount = list[position].rentAmount
+            dialogPaymentBinding.rentPaymentAmount.setText(rentAmount.toString().trim())
+            dialogPaymentBinding.paidAmount.setText(list[position].paidAmount.toString().trim())
+            dialogPaymentBinding.dueAmount.setText(list[position].dueAmount.toString().trim())
+            dialogPaymentBinding.rentPaymentAmount.isClickable = false
+            dialogPaymentBinding.rentPaymentAmount.isEnabled = false
+            val array = resources.getStringArray(R.array.month)
+            for (i in array.indices){
+                Log.e("array","array: $i")
+                if (list[position].month == array[i]){
+                    dialogPaymentBinding.spinnerMonth.setSelection(i)
+                    dialogPaymentBinding.spinnerMonth.isEnabled = false
+                    break
+                }
+            }
+        }
+        dialogPaymentBinding.dueAmount.setTextColor(ContextCompat.getColor(requireContext(),
+            R.color.red
+        ))
+
+        dialogPaymentBinding.spinnerMonth.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                month = parent?.getItemAtPosition(position).toString()
+                // Log.e("ppppppp","spinner: $month")
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+        //edittext
+        dialogPaymentBinding.paidAmount.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                var paidAmont = 0.0
+                if (s.toString().isNotEmpty()){
+                    rentAmount =dialogPaymentBinding.rentPaymentAmount.text.toString().toDouble()
+                    paidAmont = s!!.toString().toDouble()
+                    val due = rentAmount.minus(paidAmont)
+                    dialogPaymentBinding.dueAmount.setText(due.toString())
+                    dialogPaymentBinding.dueAmount.setTextColor(ContextCompat.getColor(requireContext(),
+                        R.color.red
+                    ))
+                }else{
+                    val due = rentAmount.minus(paidAmont)
+                    dialogPaymentBinding.dueAmount.setText(due.toString())
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+        //save btn
+        dialogPaymentBinding.savePayment.setOnClickListener {
+
+            CoroutineScope(IO).launch {
+                val bb= UserDataBase.getInstance(requireContext()).userDao().isRecordExistsUserId(month,year,mobileNumber)
+                //Log.e("room","bb: $bb")
+                if (position==-1){
+                    if (!bb) {
+                        UserDataBase.getInstance(requireContext()).userDao().insertPayment(
+                            Payment(0, month,year, mobileNumber,
+                                dialogPaymentBinding.rentPaymentAmount.text.toString().toDouble(),
+                                dialogPaymentBinding.paidAmount.text.toString().toDouble(),
+                                dialogPaymentBinding.dueAmount.text.toString().toDouble())
+                        )
+                        refreshData("Payment save successfully")
+                    }else{
+                        refreshData("Month already Exists")
+                    }
+
+                }else{
+                    UserDataBase.getInstance(requireContext()).userDao().paymentUpdate(
+                        Payment(list[position].id, month,year, mobileNumber,
+                            dialogPaymentBinding.rentPaymentAmount.text.toString().toDouble(),
+                            dialogPaymentBinding.paidAmount.text.toString().toDouble(),
+                            dialogPaymentBinding.dueAmount.text.toString().toDouble())
+                    )
+                    refreshData("Payment updated successfully")
+                }
+                if (dialogPaymentBinding.dueAmount.text.toString() == "0.0"){
+                    userStatusUpdate(false)
+                }else{
+                    userStatusUpdate(true)
+                }
+            }
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
     }
 
     private fun refreshData(message:String) {

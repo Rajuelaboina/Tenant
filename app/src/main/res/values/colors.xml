@@ -10,5 +10,6 @@
     <color name="red">#F60808</color>
     <color name="background">#D4EBF6</color>
     <color name="colorPrimary">#008577</color>
+    <color name="ash">#F1F1F1</color>
 
 </resources>

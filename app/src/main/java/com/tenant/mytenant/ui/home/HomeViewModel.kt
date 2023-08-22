@@ -24,4 +24,5 @@ class HomeViewModel:ViewModel() {
     fun getHomeAdapter(): HomeAdapter {
       return adapter
     }
+
 }

@@ -28,6 +28,7 @@
                 android:text="@{model.month.substring(0,3)+' '+ '-'+ ' ' +model.year}"
                 android:layout_weight="1"
                 android:textSize="16sp"
+                android:gravity="start|center"
                 android:textStyle="normal"/>
 
             <TextView
@@ -35,6 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="@{model.powerWaterBill}" />
 
             <TextView
@@ -42,6 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="@{model.powerWaterPaid}" />
 
             <TextView
@@ -49,6 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="@{model.powerWaterDue}" />
         </LinearLayout>
 

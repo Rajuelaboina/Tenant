@@ -12,9 +12,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.home.HomeFragment">
+        tools:context=".ui.home.HomeFragment"
+        android:background="@color/ash">
 
-        <LinearLayout
+       <!-- <LinearLayout
             android:id="@+id/homeLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,21 +64,21 @@
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textSize="15sp"/>
-        </LinearLayout>
+        </LinearLayout>-->
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:adapter="@{viewmodel.getHomeAdapter()}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/homeLinearLayout"
             tools:listitem="@layout/home_item" />
-
+       <!-- app:layout_constraintTop_toBottomOf="@+id/homeLinearLayout"
+-->
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyle"

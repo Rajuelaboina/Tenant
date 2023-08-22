@@ -13,11 +13,11 @@ import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
+import android.telephony.SmsManager
 import android.util.Log
-import android.widget.RemoteViews
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import com.tenant.mytenant.ui.activity.MainActivity
+
 
 class MyBroadcastReceiver : BroadcastReceiver() {
     var mp: MediaPlayer? = null
@@ -36,7 +36,7 @@ class MyBroadcastReceiver : BroadcastReceiver() {
         Toast.makeText(context, "Alarm", Toast.LENGTH_LONG).show();
         Log.e("reeeeeeeeeeeeeeee","<><><>close the app<><><><>")
 
-        notificationManager =context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+       /* notificationManager =context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val intent = Intent(context, MainActivity::class.java)
 
         // FLAG_UPDATE_CURRENT specifies that if a previous
@@ -72,7 +72,23 @@ class MyBroadcastReceiver : BroadcastReceiver() {
                 .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_launcher_background))
                 .setContentIntent(pendingIntent)
         }
-        notificationManager.notify(System.currentTimeMillis().toInt(), builder.build())
+        notificationManager.notify(System.currentTimeMillis().toInt(), builder.build())*/
+
+
+       /* try {
+            val smsManager: SmsManager = SmsManager.getDefault()
+            smsManager.sendTextMessage("9000177125", null, "hello testing app ", null, null)
+            Toast.makeText(
+                context, "Message Sent",
+                Toast.LENGTH_LONG
+            ).show()
+        } catch (ex: Exception) {
+            Toast.makeText(
+                context, ex.message.toString(),
+                Toast.LENGTH_LONG
+            ).show()
+            ex.printStackTrace()
+        }*/
     }
 
 }

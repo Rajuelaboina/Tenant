@@ -4,4 +4,5 @@ import com.tenant.mytenant.ui.register.UserRegistration
 
 interface onItemClickListener {
     fun onItemClicked(userRegistration: UserRegistration)
+    fun onItemBillClicked(userRegistration: UserRegistration)
 }

@@ -41,9 +41,12 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
            holder.bind(list[position])
-        Log.e("bind>>>>>>>","bind: "+list[position].userName+": "+ position)
-        holder.itemView.setOnClickListener {
+        //Log.e("bind>>>>>>>","bind: "+list[position].userName+": "+ position)
+        holder.binding.rentButton.setOnClickListener {
             myListener.onItemClicked(list[position])
+        }
+        holder.binding.billButton.setOnClickListener {
+            myListener.onItemBillClicked(list[position])
         }
 
         val items1: List<String>  = list[position].joinDate.split("-")
@@ -85,7 +88,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
         }
 
         if (list[position].status){
-            holder.binding.cardView1.setBackgroundColor(ContextCompat.getColor(context,R.color.background))
+         //   holder.binding.cardView1.setBackgroundColor(ContextCompat.getColor(context,R.color.background))
 
         }
        /* var date = Date()

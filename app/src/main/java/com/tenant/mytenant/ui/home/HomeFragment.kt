@@ -173,15 +173,14 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
     }
 
     override fun onItemClicked(userRegistration: UserRegistration) {
-       // Log.e("item clicked","onItemclicked: ${userRegistration.userName}")
-       /* val bundle = Bundle()
+        val bundle = Bundle()
         bundle.putSerializable("OK",userRegistration)
-       // bundle.putDouble("AMOUNT",userRegistration.rentAmount)
-       // bundle.putString("MOBILE",userRegistration.mobileNumber)
-        findNavController().navigate(R.id.action_HomeFragment_to_userPaymentFragment2,bundle)*/
+        // bundle.putDouble("AMOUNT",userRegistration.rentAmount)
+        // bundle.putString("MOBILE",userRegistration.mobileNumber)
+        findNavController().navigate(R.id.action_HomeFragment_to_userPaymentFragment2,bundle)
 
         //dialog of payment and power payment
-        MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
+        /*MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
             .setTitle("Do you want add Payment")
             .setNegativeButton("Rent payment", DialogInterface.OnClickListener { dialog, which ->
                 val bundle = Bundle()
@@ -199,24 +198,34 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
                 )
             }
             .create()
-            .show()
+            .show()*/
+
     }
 
-   /* override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_main, menu)
+    override fun onItemBillClicked(userRegistration: UserRegistration) {
+        val bundle = Bundle()
+        bundle.putSerializable("OK", userRegistration)
+        findNavController().navigate(
+            R.id.action_HomeFragment_to_poweWaterListFragment,
+            bundle
+        )
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_settings -> {}
-            R.id.action_addUser -> {
-                findNavController().navigate(R.id.action_HomeFragment_to_RegistrationFragment)
-            }
+    /* override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+         super.onCreateOptionsMenu(menu, inflater)
+         inflater.inflate(R.menu.menu_main, menu)
+     }
 
-        }
-        return super.onOptionsItemSelected(item)
-    }*/
+     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+         when (item.itemId) {
+             R.id.action_settings -> {}
+             R.id.action_addUser -> {
+                 findNavController().navigate(R.id.action_HomeFragment_to_RegistrationFragment)
+             }
+
+         }
+         return super.onOptionsItemSelected(item)
+     }*/
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.menu_main, menu)
