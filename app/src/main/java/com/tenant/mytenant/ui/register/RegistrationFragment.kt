@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
 import com.tenant.mytenant.R
 import com.tenant.mytenant.database.UserDataBase
 import com.tenant.mytenant.databinding.FragmentRegistrationBinding
@@ -28,6 +30,8 @@ class RegistrationFragment : Fragment(), RegistrationListener {
 
     private var _binding: FragmentRegistrationBinding? = null
     private lateinit var viewModel: RegistrationViewModel
+   // lateinit var firebaseFireStore : FirebaseFirestore
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -36,7 +40,8 @@ class RegistrationFragment : Fragment(), RegistrationListener {
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
         _binding = FragmentRegistrationBinding.inflate(inflater, container, false)
         binding.viewModel = ViewModelProvider(this, RegistrationViewModelFactory(this))[RegistrationViewModel::class.java]
-
+       // FirebaseApp.initializeApp(requireContext())
+       // firebaseFireStore = FirebaseFirestore.getInstance()
         return binding.root
 
     }
@@ -81,7 +86,7 @@ class RegistrationFragment : Fragment(), RegistrationListener {
     }
 
     override fun onSuccess(code: Int) {
-
+           //val collectionRef = firebaseFireStore.collection("registration")
             CoroutineScope(IO).launch {
               UserDataBase.getInstance(requireContext()).userDao().insertUser(
                   UserRegistration(binding.editTextTextPersonName.text.toString().trim(),
@@ -91,7 +96,35 @@ class RegistrationFragment : Fragment(), RegistrationListener {
                   binding.editTextRentAmount.text.toString().trim().toDouble(),
                   date,false)
               )
-              // val user= UserDataBase.getInstance(requireContext()).userDao().getAllUsers()
+       //------- fire base store add the data ------------- //
+             /* collectionRef.add(UserRegistration(binding.editTextTextPersonName.text.toString().trim(),
+                  binding.editTextMobileNumber.text.toString().trim(),
+                  binding.editTextAadharNumber.text.toString().trim(),
+                  binding.editTextRentRoomNumber.text.toString().trim(),
+                  binding.editTextRentAmount.text.toString().trim().toDouble(),
+                  date,false)).addOnSuccessListener {
+                     Log.e("fireBase","FireBasedata add success")
+              }*/
+                /*collectionRef.document("users").collection(binding.editTextMobileNumber.text.toString().trim()).add(
+                UserRegistration(binding.editTextTextPersonName.text.toString().trim(),
+                    binding.editTextMobileNumber.text.toString().trim(),
+                    binding.editTextAadharNumber.text.toString().trim(),
+                    binding.editTextRentRoomNumber.text.toString().trim(),
+                    binding.editTextRentAmount.text.toString().trim().toDouble(),
+                    date,false)).addOnSuccessListener {
+                    Log.e("fireBase","FireBasedata add success")
+
+                }*/
+                /*collectionRef.document(binding.editTextMobileNumber.text.toString().trim()).set(
+                    UserRegistration(binding.editTextTextPersonName.text.toString().trim(),
+                        binding.editTextMobileNumber.text.toString().trim(),
+                        binding.editTextAadharNumber.text.toString().trim(),
+                        binding.editTextRentRoomNumber.text.toString().trim(),
+                        binding.editTextRentAmount.text.toString().trim().toDouble(),
+                        date,false)
+                )*/
+
+                // val user= UserDataBase.getInstance(requireContext()).userDao().getAllUsers()
                // Log.e("data",""+user.size)
             }
         Toast.makeText(requireContext(),"Registration successfully: ",Toast.LENGTH_LONG).show()

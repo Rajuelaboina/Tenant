@@ -1,7 +1,6 @@
 package com.tenant.mytenant.ui.rentpayment
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
 import com.tenant.mytenant.R
 import com.tenant.mytenant.database.UserDataBase
 import com.tenant.mytenant.databinding.DialogPaymentBinding
@@ -27,7 +28,7 @@ import java.util.*
 
 @Suppress("DEPRECATION")
 class PaymentListFragment : Fragment(), OnItemClicked {
-
+  //  lateinit var firebaseFireStore : FirebaseFirestore
     private var _binding: FragmentPaymentListBinding? = null
     private val  binding get() = _binding!!
     private lateinit var viewModel: PaymentListViewModel
@@ -41,6 +42,8 @@ class PaymentListFragment : Fragment(), OnItemClicked {
         // Inflate the layout for this fragment
          _binding = FragmentPaymentListBinding.inflate(inflater,container,false)
         viewModel= ViewModelProvider(this)[PaymentListViewModel::class.java]
+       // FirebaseApp.initializeApp(requireContext())
+       // firebaseFireStore = FirebaseFirestore.getInstance()
         return binding.root
     }
 
@@ -83,7 +86,15 @@ class PaymentListFragment : Fragment(), OnItemClicked {
 
                 binding.textViewNotFound.visibility = View.VISIBLE
             }
-
+            //  --  fire store display data ---------------//
+           /* val collectionRef = firebaseFireStore.collection("payment").document(mobileNumber).collection(year).whereEqualTo("mobileNumber",mobileNumber)
+                .get().addOnSuccessListener {
+                      it.forEach {
+                         list.add( Payment(0,it.get("month").toString(),it.get("year").toString(),it.get("mobileNumber").toString(),it.get("rentAmount").toString().toDouble(),
+                                  it.get("paidAmount").toString().toDouble(),it.get("dueAmount").toString().toDouble()))
+                      }
+                    viewModel.setAdapter(list)
+            }*/
         }
     }
 
@@ -283,6 +294,7 @@ class PaymentListFragment : Fragment(), OnItemClicked {
         })
         //save btn
         dialogPaymentBinding.savePayment.setOnClickListener {
+          //  val collectionRef = firebaseFireStore.collection("payment")
 
             CoroutineScope(IO).launch {
                 val bb= UserDataBase.getInstance(requireContext()).userDao().isRecordExistsUserId(month,year,mobileNumber)
@@ -299,6 +311,23 @@ class PaymentListFragment : Fragment(), OnItemClicked {
                     }else{
                         refreshData("Month already Exists")
                     }
+                   /* collectionRef.document("users").collection(mobileNumber).document(year).collection(month).add(
+                   Payment(0, month,year, mobileNumber,
+                        dialogPaymentBinding.rentPaymentAmount.text.toString().toDouble(),
+                        dialogPaymentBinding.paidAmount.text.toString().toDouble(),
+                        dialogPaymentBinding.dueAmount.text.toString().toDouble())
+                    ).addOnSuccessListener {
+                        Log.e("fireBase","FireBasedata add success")
+                    }*/
+
+                   /* collectionRef.document(mobileNumber).collection(year).add(Payment(0, month,year, mobileNumber,
+                        dialogPaymentBinding.rentPaymentAmount.text.toString().toDouble(),
+                        dialogPaymentBinding.paidAmount.text.toString().toDouble(),
+                        dialogPaymentBinding.dueAmount.text.toString().toDouble())
+                    ).addOnSuccessListener {
+                        Log.e("fireBase","FireBasedata add success")
+                    }*/
+
 
                 }else{
                     UserDataBase.getInstance(requireContext()).userDao().paymentUpdate(

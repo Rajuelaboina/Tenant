@@ -51,5 +51,7 @@ interface UserRegistrationDao {
     @Update
     fun powerBillUpdate(payment: PowerWaterPayment)
 
+    @Query("DELETE FROM powerWaterBill WHERE mobileNumber = :mobileNumber")
+    fun deletePowerBillUser(mobileNumber: String)
 
 }

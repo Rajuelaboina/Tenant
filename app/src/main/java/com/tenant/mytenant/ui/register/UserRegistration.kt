@@ -9,6 +9,7 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Entity(tableName = "Registration")
+
 data class UserRegistration (
     @ColumnInfo(name = "userName")
     var userName: String,

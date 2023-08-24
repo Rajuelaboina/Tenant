@@ -235,14 +235,14 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
             dialogPaymentBinding.rentPaymentAmount.setText(rentAmount.toString().trim())
             dialogPaymentBinding.paidAmount.setText(list[position].powerWaterPaid.trim())
             dialogPaymentBinding.dueAmount.setText(list[position].powerWaterDue.trim())
-            dialogPaymentBinding.rentPaymentAmount.isClickable = false
-            dialogPaymentBinding.rentPaymentAmount.isEnabled = false
+          //  dialogPaymentBinding.rentPaymentAmount.isClickable = false
+           // dialogPaymentBinding.rentPaymentAmount.isEnabled = false
             val array = resources.getStringArray(R.array.month)
             for (i in array.indices){
                 // Log.e("array","array: $i")
                 if (list[position].month == array[i]){
                     dialogPaymentBinding.spinnerMonth.setSelection(i)
-                    dialogPaymentBinding.spinnerMonth.isEnabled = false
+                 //   dialogPaymentBinding.spinnerMonth.isEnabled = false
                     break
                 }
             }

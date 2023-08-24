@@ -1,15 +1,11 @@
 package com.tenant.mytenant.ui.home
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -19,7 +15,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.tenant.mytenant.MyBroadcastReceiver
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
 import com.tenant.mytenant.R
 import com.tenant.mytenant.database.UserDataBase
 import com.tenant.mytenant.databinding.FragmentHomeBinding
@@ -30,12 +27,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
+   // lateinit var firebaseFireStore : FirebaseFirestore
     lateinit var date:Date
     private var _binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
@@ -44,6 +43,7 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
     // onDestroyView.
     private val binding get() = _binding!!
     lateinit var userList: List<UserRegistration>
+    var list  = ArrayList<UserRegistration>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View{
          //setHasOptionsMenu(true)
@@ -51,6 +51,8 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+      //  FirebaseApp.initializeApp(requireContext())
+       // firebaseFireStore = FirebaseFirestore.getInstance()
         return binding.root
 
     }
@@ -74,17 +76,24 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
                     .setTitle("Do you want Delete!")
                     .setPositiveButton("Yes") { dialog, which ->
                         //SharedPrefManager.getInstance(applicationContext).isLogedout()
+                        binding.progressBar.visibility = View.VISIBLE
                       CoroutineScope(IO).launch {
                           UserDataBase.getInstance(requireContext()).userDao().deleteUser(userList[position].mobileNumber)
                           UserDataBase.getInstance(requireContext()).userDao().deletepayUser(userList[position].mobileNumber)
+                          UserDataBase.getInstance(requireContext()).userDao().deletePowerBillUser(userList[position].mobileNumber)
                       }
-                        DisplayAllUsers()
+
                     }
                     .setNegativeButton("Cancel") { dialog, which ->
                         dialog.dismiss()
-                        DisplayAllUsers()
+                       // DisplayAllUsers()
                     }
                     .show()
+
+                Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                    DisplayAllUsers()
+                    binding.progressBar.visibility = View.GONE
+                },3000)
 
             }
 
@@ -115,14 +124,34 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
     }
 
     private fun DisplayAllUsers() {
+
         viewModel.getAllUsers(requireContext())
-        viewModel.list.observe(this) {
+        viewModel.list.observe(this) { it ->
             // binding.recyclerView
             binding.progressBar.visibility = View.GONE
             if (it != null) {
                 userList = it
                 viewModel.setAdapter(it)
             }
+      // fire base store display the data
+            /*val collectionRef = firebaseFireStore.collection("registration")
+            collectionRef.get().addOnSuccessListener {
+                it.documents.forEach {
+                    Log.e("<><><><><><><><><><><><><><><>","DDDDDDDDDDDDDDD: "+it.get("userName"))
+                    Log.e("<><><><><><><><><><><><><><><>","DDDDDDDDDDDDDDD: "+it.get("mobileNumber"))
+                    Log.e("<><><><><><><><><><><><><><><>","DDDDDDDDDDDDDDD: "+it.get("aadharNumber"))
+                    Log.e("<><><><><><><><><><><><><><><>","DDDDDDDDDDDDDDD: "+it.get("roomNumber"))
+                    Log.e("<><><><><><><><><><><><><><><>","DDDDDDDDDDDDDDD: "+it.get("rentAmount"))
+                    Log.e("<><><><><><><><><><><><><><><>","DDDDDDDDDDDDDDD: "+it.get("joinDate"))
+                    Log.e("<><><><><><><><><><><><><><><>","DDDDDDDDDDDDDDD: "+it.get("status"))
+
+                    list.add(UserRegistration(it.get("userName").toString(),it.get("mobileNumber").toString(),it.get("aadharNumber").toString(),it.get("roomNumber").toString(),
+                        it.get("rentAmount").toString().toDouble(),it.get("joinDate").toString(),it.get("status").toString().toBoolean())
+                    )
+                }
+                viewModel.setAdapter(list)
+            }*/
+
           /* it.forEach {
                val items1: Array<String> = it.split("-")
                val year = items1[0].toInt()
