@@ -37,6 +37,9 @@ class RegistrationFragment : Fragment(), RegistrationListener {
     // onDestroyView.
     private val binding get() = _binding!!
     var date =""
+    var year = 0
+    var month = 0
+    var day = 0
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
         _binding = FragmentRegistrationBinding.inflate(inflater, container, false)
         binding.viewModel = ViewModelProvider(this, RegistrationViewModelFactory(this))[RegistrationViewModel::class.java]
@@ -49,27 +52,25 @@ class RegistrationFragment : Fragment(), RegistrationListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val c: Calendar = Calendar.getInstance()
+        year = c.get(Calendar.YEAR)
+        month = c.get(Calendar.MONTH)
+        day = c.get(Calendar.DAY_OF_MONTH)
+        binding.editTextJoinDate.setText(day.toString() + "-" + (month + 1) + "-" + year)
 
-      /*  binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-        }*/
-        binding.editTextAadharNumber.addTextChangedListener(object: TextWatcher{
+        /*  binding.buttonSecond.setOnClickListener {
+              findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+          }*/
+       /* binding.editTextAadharNumber.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
-
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
                 Log.e("booblean","BBBBB: "+  formatCard(s.toString()))
             }
-
             override fun afterTextChanged(s: Editable?) {
-
                // Log.e("booblean","BBBBB: "+ isValidVisaCardNo(s.toString()))
             }
-
-        })
-
+        }) */
     }
 
     private fun formatCard(cardNumber: String):String {
@@ -136,24 +137,23 @@ class RegistrationFragment : Fragment(), RegistrationListener {
     }
 
     override fun onDate() {
-        val c: Calendar = Calendar.getInstance()
+        //val c: Calendar = Calendar.getInstance()
 
         // on below line we are getting
         // our day, month and year.
 
         // on below line we are getting
         // our day, month and year.
-        val year: Int = c.get(Calendar.YEAR)
+      /*  val year: Int = c.get(Calendar.YEAR)
         val month: Int = c.get(Calendar.MONTH)
-        val day: Int = c.get(Calendar.DAY_OF_MONTH)
-
+        val day: Int = c.get(Calendar.DAY_OF_MONTH)*/
         // on below line we are creating a variable for date picker dialog.
 
         // on below line we are creating a variable for date picker dialog.
         val datePickerDialog = DatePickerDialog( // on below line we are passing context.
             requireContext(),
             { view, year, monthOfYear, dayOfMonth -> // on below line we are setting date to our edit text.
-                binding.editTextJoinDate.setText(dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
+               // binding.editTextJoinDate.setText(dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
                 var cal = Calendar.getInstance()
                 cal.set(Calendar.YEAR, year)
                 cal.set(Calendar.MONTH, monthOfYear)
@@ -161,6 +161,7 @@ class RegistrationFragment : Fragment(), RegistrationListener {
 
                 val sdf = SimpleDateFormat("dd-MM-yyyy")
                 date = sdf.format(cal.time)
+                binding.editTextJoinDate.setText(date)
                // Log.e("picker","$date")
             },  // on below line we are passing year,
             // month and day for selected date in our date picker.
@@ -172,20 +173,4 @@ class RegistrationFragment : Fragment(), RegistrationListener {
         // display our date picker dialog.
         datePickerDialog.show()
     }
-
-   /* override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //inflater.inflate(R.menu.menu_main, menu)
-        menu.clear()
-    }*/
-
-   /* override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.action_settings ->{}
-            R.id.action_addPayment ->{
-
-            }
-        }
-        return true
-    }*/
 }

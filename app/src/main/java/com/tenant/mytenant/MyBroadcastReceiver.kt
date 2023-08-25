@@ -34,9 +34,9 @@ class MyBroadcastReceiver : BroadcastReceiver() {
         mp= MediaPlayer.create(context, alarmSound)
         mp?.start()
         Toast.makeText(context, "Alarm", Toast.LENGTH_LONG).show();
-        Log.e("reeeeeeeeeeeeeeee","<><><>close the app<><><><>")
+        //Log.e("reeeeeeeeeeeeeeee","<><><>close the app<><><><>")
 
-       /* notificationManager =context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager =context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val intent = Intent(context, MainActivity::class.java)
 
         // FLAG_UPDATE_CURRENT specifies that if a previous
@@ -61,6 +61,8 @@ class MyBroadcastReceiver : BroadcastReceiver() {
             notificationManager.createNotificationChannel(notificationChannel)
 
             builder = Notification.Builder(context, channelId)
+                .setContentTitle("Rent payment")
+                .setContentText("please pay the house Rent!")
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_launcher_background))
                 .setContentIntent(pendingIntent)
@@ -68,16 +70,18 @@ class MyBroadcastReceiver : BroadcastReceiver() {
 
             builder = Notification.Builder(context)
                 //.setContent(contentView)
+                .setContentTitle("Rent payment")
+                .setContentText("please pay the house Rent!")
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.ic_launcher_background))
                 .setContentIntent(pendingIntent)
         }
-        notificationManager.notify(System.currentTimeMillis().toInt(), builder.build())*/
+        notificationManager.notify(System.currentTimeMillis().toInt(), builder.build())
 
 
-       /* try {
+        try {
             val smsManager: SmsManager = SmsManager.getDefault()
-            smsManager.sendTextMessage("9000177125", null, "hello testing app ", null, null)
+            smsManager.sendTextMessage("9000177125", "9959279591", "please pay the Rent today ", null, null)
             Toast.makeText(
                 context, "Message Sent",
                 Toast.LENGTH_LONG
@@ -88,7 +92,7 @@ class MyBroadcastReceiver : BroadcastReceiver() {
                 Toast.LENGTH_LONG
             ).show()
             ex.printStackTrace()
-        }*/
+        }
     }
 
 }

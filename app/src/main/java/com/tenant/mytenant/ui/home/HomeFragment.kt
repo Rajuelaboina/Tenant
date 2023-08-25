@@ -72,28 +72,49 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
         val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position :Int = viewHolder.adapterPosition
-                MaterialAlertDialogBuilder(requireContext(), R.style.RoundShapeTheme)
-                    .setTitle("Do you want Delete!")
-                    .setPositiveButton("Yes") { dialog, which ->
-                        //SharedPrefManager.getInstance(applicationContext).isLogedout()
-                        binding.progressBar.visibility = View.VISIBLE
-                      CoroutineScope(IO).launch {
-                          UserDataBase.getInstance(requireContext()).userDao().deleteUser(userList[position].mobileNumber)
-                          UserDataBase.getInstance(requireContext()).userDao().deletepayUser(userList[position].mobileNumber)
-                          UserDataBase.getInstance(requireContext()).userDao().deletePowerBillUser(userList[position].mobileNumber)
-                      }
+                when(direction){
+                    ItemTouchHelper.LEFT->{
+                        MaterialAlertDialogBuilder(requireContext(), R.style.RoundShapeTheme)
+                            .setTitle("Do you want Delete!")
+                            .setPositiveButton("Yes") { dialog, which ->
+                                //SharedPrefManager.getInstance(applicationContext).isLogedout()
+                                binding.progressBar.visibility = View.VISIBLE
+                                CoroutineScope(IO).launch {
+                                    UserDataBase.getInstance(requireContext()).userDao().deleteUser(userList[position].mobileNumber)
+                                    UserDataBase.getInstance(requireContext()).userDao().deletepayUser(userList[position].mobileNumber)
+                                    UserDataBase.getInstance(requireContext()).userDao().deletePowerBillUser(userList[position].mobileNumber)
+                                }
+
+                            }
+                            .setNegativeButton("Cancel") { dialog, which ->
+                                dialog.dismiss()
+                                // DisplayAllUsers()
+                            }
+                            .show()
+
+                        Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                            DisplayAllUsers()
+                            binding.progressBar.visibility = View.GONE
+                        },3000)
+                    }
+                    ItemTouchHelper.RIGHT->{
+                        MaterialAlertDialogBuilder(requireContext(), R.style.RoundShapeTheme)
+                            .setTitle("Edit!")
+                            .setPositiveButton("Yes") { dialog, which ->
+                                //SharedPrefManager.getInstance(applicationContext).isLogedout()
+                                binding.progressBar.visibility = View.VISIBLE
+
+
+                            }
+
+                            .show()
+
 
                     }
-                    .setNegativeButton("Cancel") { dialog, which ->
-                        dialog.dismiss()
-                       // DisplayAllUsers()
-                    }
-                    .show()
+                }
 
-                Handler(Looper.getMainLooper()).postDelayed(Runnable {
-                    DisplayAllUsers()
-                    binding.progressBar.visibility = View.GONE
-                },3000)
+
+
 
             }
 
@@ -133,19 +154,11 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
                 userList = it
                 viewModel.setAdapter(it)
             }
-      // fire base store display the data
+      //  --------- fire base store display the data ----------------//
             /*val collectionRef = firebaseFireStore.collection("registration")
             collectionRef.get().addOnSuccessListener {
                 it.documents.forEach {
-                    Log.e("<><><><><><><><><><><><><><><>","DDDDDDDDDDDDDDD: "+it.get("userName"))
-                    Log.e("<><><><><><><><><><><><><><><>","DDDDDDDDDDDDDDD: "+it.get("mobileNumber"))
-                    Log.e("<><><><><><><><><><><><><><><>","DDDDDDDDDDDDDDD: "+it.get("aadharNumber"))
-                    Log.e("<><><><><><><><><><><><><><><>","DDDDDDDDDDDDDDD: "+it.get("roomNumber"))
-                    Log.e("<><><><><><><><><><><><><><><>","DDDDDDDDDDDDDDD: "+it.get("rentAmount"))
-                    Log.e("<><><><><><><><><><><><><><><>","DDDDDDDDDDDDDDD: "+it.get("joinDate"))
-                    Log.e("<><><><><><><><><><><><><><><>","DDDDDDDDDDDDDDD: "+it.get("status"))
-
-                    list.add(UserRegistration(it.get("userName").toString(),it.get("mobileNumber").toString(),it.get("aadharNumber").toString(),it.get("roomNumber").toString(),
+                   list.add(UserRegistration(it.get("userName").toString(),it.get("mobileNumber").toString(),it.get("aadharNumber").toString(),it.get("roomNumber").toString(),
                         it.get("rentAmount").toString().toDouble(),it.get("joinDate").toString(),it.get("status").toString().toBoolean())
                     )
                 }
@@ -158,40 +171,8 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
                val month = items1[1].toInt()
                val day = items1[2].toInt()
            }*/
-            val cal = Calendar.getInstance()
-            val cal2 = Calendar.getInstance()
-            val smpl = SimpleDateFormat("dd-M-yyyy")
-            val smpl2 = SimpleDateFormat("dd-M-yyyy")
-            var inActiveDate: Date? = null
-            var date1 :Date
-            var date2 :Date
-            for (i in it.indices){
-                val items1: List<String> = it[i].joinDate.split("-")
-                val day = items1[0].toInt()
-                val month = items1[1].toInt()
-                val year = items1[2].toInt()
-               /* Log.e("split date",""+year)
-                Log.e("split date",""+month)
-                Log.e("split date",""+day)*/
-                cal.set(Calendar.YEAR,year)
-                cal.set(Calendar.MONTH,month)
-                cal.set(Calendar.DAY_OF_MONTH,day)
-                date1 = cal.time
-               // Log.e("Db Date>>>>>>>","DB Date: $date1")
-                date2 =cal2.time
-               // Log.e("Db Date>>>>>>>","DB Date: $date2")
-               // Log.e("Current>>>>>>>","current Date: ${smpl.format(date2)}")
+           // -----------------//
 
-
-               /* if (date1.before(date2)){
-                    Log.e("before>>>>>>>","before")
-                }else if (date1.after(date2)){
-                    Log.e("after>>>>>>>","after")
-                }else{
-                    Log.e("same>>>>>>>","same")
-                }*/
-
-            }
 
         }
     }
