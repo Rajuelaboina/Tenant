@@ -89,4 +89,11 @@
             @drawable/icon
         </item>
     </style>
+    <style name="floatingAdd" parent="Widget.Design.FloatingActionButton">
+        <item name = "android:foreground">
+            @drawable/baseline_person_add_24
+        </item>
+        <item name="backgroundTint">@color/purple_500</item>
+    </style>
+
 </resources>

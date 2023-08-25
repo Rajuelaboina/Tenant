@@ -13,8 +13,9 @@ interface UserRegistrationDao {
     @Query("SELECT * FROM Registration")
      fun getAllUsers(): List<UserRegistration>
 
-    /*@Query("SELECT EXISTS(SELECT * FROM Registration WHERE mobileNumber = :mobileNumber)")
-    fun isRecordExistsUserId(mobileNumber: String): Boolean*/
+   /* @Query("SELECT EXISTS(SELECT * FROM Registration WHERE mobileNumber = :mobileNumber)")
+    fun isRomExists(mobileNumber: String): Boolean*/
+
     @Update
     fun getUpdate(userRegistration: UserRegistration)
     //delete

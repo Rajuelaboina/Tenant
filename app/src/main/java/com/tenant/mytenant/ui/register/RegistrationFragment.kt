@@ -36,7 +36,7 @@ class RegistrationFragment : Fragment(), RegistrationListener {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    var date =""
+    var date = ""
     var year = 0
     var month = 0
     var day = 0

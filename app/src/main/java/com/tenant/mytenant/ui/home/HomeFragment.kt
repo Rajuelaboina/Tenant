@@ -1,11 +1,16 @@
 package com.tenant.mytenant.ui.home
 
-import android.icu.text.SimpleDateFormat
+import android.app.DatePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.UnderlineSpan
 import android.view.*
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -14,11 +19,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.FirebaseApp
-import com.google.firebase.firestore.FirebaseFirestore
 import com.tenant.mytenant.R
 import com.tenant.mytenant.database.UserDataBase
+import com.tenant.mytenant.databinding.DialogRegistrationBinding
 import com.tenant.mytenant.databinding.FragmentHomeBinding
 import com.tenant.mytenant.ui.register.UserRegistration
 import com.tenant.mytenant.userlistener.onItemClickListener
@@ -26,8 +31,8 @@ import com.tenant.mytenant.utils.SwipeToDeleteCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -35,7 +40,7 @@ import kotlin.collections.ArrayList
  */
 class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
    // lateinit var firebaseFireStore : FirebaseFirestore
-    lateinit var date:Date
+    //lateinit var date:Date
     private var _binding: FragmentHomeBinding? = null
     private lateinit var viewModel: HomeViewModel
 
@@ -43,8 +48,12 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
     // onDestroyView.
     private val binding get() = _binding!!
     lateinit var userList: List<UserRegistration>
-    var list  = ArrayList<UserRegistration>()
-
+    //var list  = ArrayList<UserRegistration>()
+    lateinit var registrationBinding :DialogRegistrationBinding
+    private var dialog_Date = ""
+    private var year = 0
+    private var month = 0
+    private var day = 0
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View{
          //setHasOptionsMenu(true)
         val menuHost: MenuHost = requireActivity()
@@ -59,6 +68,11 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val c: Calendar = Calendar.getInstance()
+        year = c.get(Calendar.YEAR)
+        month = c.get(Calendar.MONTH)
+        day = c.get(Calendar.DAY_OF_MONTH)
+
 
       /*  binding.buttonFirst.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
@@ -98,17 +112,9 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
                         },3000)
                     }
                     ItemTouchHelper.RIGHT->{
-                        MaterialAlertDialogBuilder(requireContext(), R.style.RoundShapeTheme)
-                            .setTitle("Edit!")
-                            .setPositiveButton("Yes") { dialog, which ->
-                                //SharedPrefManager.getInstance(applicationContext).isLogedout()
-                                binding.progressBar.visibility = View.VISIBLE
-
-
-                            }
-
-                            .show()
-
+                       // edit too data ----------//
+                        showDialog(position)
+                        DisplayAllUsers()
 
                     }
                 }
@@ -142,6 +148,116 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
 
         return Date(time)*/
 
+    }
+    // edit data from registration
+    private fun showDialog(position: Int) {
+        val alertDialog = BottomSheetDialog(requireContext(),R.style.BottomSheetDialogStyle)
+        registrationBinding = DialogRegistrationBinding.inflate(layoutInflater )
+        alertDialog.setContentView(registrationBinding.root)
+
+        if (position==-1){
+            registrationBinding.editTextJoinDate.setText(day.toString() + "-" + (month + 1) + "-" + year)
+
+             setSpanale("Tenant Registration !",0,6,21)
+
+        }else{
+            setSpanale("Tenant Details Update !",0,6,23)
+
+            registrationBinding.editTextTextPersonName.setText( userList[position].userName)
+            registrationBinding.editTextMobileNumber.setText( userList[position].mobileNumber)
+            registrationBinding.editTextAadharNumber.setText( userList[position].aadharNumber)
+            registrationBinding.editTextRentRoomNumber.setText( userList[position].roomNumber)
+            registrationBinding.editTextRentAmount.setText( userList[position].rentAmount.toString())
+            registrationBinding.editTextJoinDate.setText( userList[position].joinDate)
+            dialog_Date = userList[position].joinDate
+        }
+
+
+        registrationBinding.editTextJoinDate.setOnClickListener {
+            showdateDialog()
+        }
+        registrationBinding.buttonSave.setOnClickListener {
+            if (position==-1){
+                dataInsert()
+            }else{
+               dataUpdate()
+            }
+
+            alertDialog.dismiss()
+            DisplayAllUsers()
+        }
+
+        alertDialog.show()
+
+    }
+
+    private fun setSpanale(string: String, sp1: Int, sp2: Int, sp3: Int) {
+        val spannable =SpannableString(string)
+        spannable.setSpan(UnderlineSpan(),0,spannable.length,0)
+        val foregroundSpan = ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.purple_700))
+        spannable.setSpan(foregroundSpan,sp1, sp2,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val foregroundSpan2 = ForegroundColorSpan(ContextCompat.getColor(requireContext(),R.color.red))
+        spannable.setSpan(foregroundSpan2, sp2, sp3,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        registrationBinding.textView.text = spannable
+    }
+
+    // register data insert in database
+   private fun dataInsert(){
+        CoroutineScope(IO).launch {
+            UserDataBase.getInstance(requireContext()).userDao().insertUser(
+                UserRegistration(
+                    registrationBinding.editTextTextPersonName.text.toString().trim(),
+                    registrationBinding.editTextMobileNumber.text.toString().trim(),
+                    registrationBinding.editTextAadharNumber.text.toString().trim(),
+                    registrationBinding.editTextRentRoomNumber.text.toString().trim(),
+                    registrationBinding.editTextRentAmount.text.toString().trim().toDouble(),
+                    dialog_Date, false
+                )
+            )
+        }
+   }
+    // register data update in database
+    private fun dataUpdate(){
+        CoroutineScope(IO).launch {
+            UserDataBase.getInstance(requireContext()).userDao().getUpdate(
+                UserRegistration(
+                    registrationBinding.editTextTextPersonName.text.toString().trim(),
+                    registrationBinding.editTextMobileNumber.text.toString().trim(),
+                    registrationBinding.editTextAadharNumber.text.toString().trim(),
+                    registrationBinding.editTextRentRoomNumber.text.toString().trim(),
+                    registrationBinding.editTextRentAmount.text.toString().trim().toDouble(),
+                    dialog_Date, false
+                )
+            )
+        }
+    }
+    private fun showdateDialog() {
+        val c: Calendar = Calendar.getInstance()
+        val year: Int = c.get(Calendar.YEAR)
+        val month: Int = c.get(Calendar.MONTH)
+        val day: Int = c.get(Calendar.DAY_OF_MONTH)
+        val datePickerDialog = DatePickerDialog( // on below line we are passing context.
+            requireContext(),
+            { view, year, monthOfYear, dayOfMonth -> // on below line we are setting date to our edit text.
+                // binding.editTextJoinDate.setText(dayOfMonth.toString() + "-" + (monthOfYear + 1) + "-" + year)
+                var cal = Calendar.getInstance()
+                cal.set(Calendar.YEAR, year)
+                cal.set(Calendar.MONTH, monthOfYear)
+                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+                val sdf = SimpleDateFormat("dd-MM-yyyy")
+                dialog_Date = sdf.format(cal.time)
+                registrationBinding.editTextJoinDate.setText(dialog_Date)
+                // Log.e("picker","$date")
+            },  // on below line we are passing year,
+            // month and day for selected date in our date picker.
+            year, month, day
+        )
+        // at last we are calling show to
+        // display our date picker dialog.
+        // at last we are calling show to
+        // display our date picker dialog.
+        datePickerDialog.show()
     }
 
     private fun DisplayAllUsers() {
@@ -245,10 +361,13 @@ class HomeFragment : Fragment(), onItemClickListener, MenuProvider {
         when (menuItem.itemId) {
             R.id.action_settings -> {}
             R.id.action_addUser -> {
-                findNavController().navigate(R.id.action_HomeFragment_to_RegistrationFragment)
+                //findNavController().navigate(R.id.action_HomeFragment_to_RegistrationFragment)
+                showDialog(-1)
             }
 
         }
         return true
     }
+
+
 }
