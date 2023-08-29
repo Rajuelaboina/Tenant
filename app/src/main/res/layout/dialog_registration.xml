@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,28 +16,28 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:ems="10"
-            android:hint="Name"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:ems="10"
+            android:hint="User name"
             android:inputType="textCapSentences"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="36dp"
             android:text="Tenant Registration"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintHorizontal_bias="0.623"
+            app:layout_constraintStart_toStartOf="@+id/guideline8"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -46,40 +45,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="90dp" />
+            app:layout_constraintGuide_begin="146dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_end="90dp" />
+            app:layout_constraintGuide_end="28dp" />
 
         <EditText
             android:id="@+id/editTextMobileNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Mobile number"
+            android:hint="Mobile "
             android:inputType="phone"
             android:maxLength="10"
             app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName"
             app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
-           />
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 
         <EditText
             android:id="@+id/editTextAadharNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Aadhar number"
+            android:hint="Aadhar "
             android:inputType="number"
             android:maxLength="12"
             app:layout_constraintEnd_toEndOf="@+id/editTextMobileNumber"
             app:layout_constraintStart_toStartOf="@+id/editTextMobileNumber"
-            app:layout_constraintTop_toBottomOf="@+id/editTextMobileNumber"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/editTextMobileNumber" />
 
         <EditText
             android:id="@+id/editTextRentRoomNumber"
@@ -87,11 +84,10 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Room number"
-            android:inputType="number"
+            android:inputType="number|text"
             app:layout_constraintEnd_toEndOf="@+id/editTextAadharNumber"
             app:layout_constraintStart_toStartOf="@+id/editTextAadharNumber"
-            app:layout_constraintTop_toBottomOf="@+id/editTextAadharNumber"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/editTextAadharNumber" />
 
         <EditText
             android:id="@+id/editTextRentAmount"
@@ -102,34 +98,112 @@
             android:inputType="number"
             app:layout_constraintEnd_toEndOf="@+id/editTextRentRoomNumber"
             app:layout_constraintStart_toStartOf="@+id/editTextRentRoomNumber"
-            app:layout_constraintTop_toBottomOf="@+id/editTextRentRoomNumber"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/editTextRentRoomNumber" />
 
         <EditText
             android:id="@+id/editTextJoinDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Join Date"
-            android:inputType="date"
-             app:layout_constraintEnd_toEndOf="@+id/editTextRentAmount"
-            app:layout_constraintStart_toStartOf="@+id/editTextRentAmount"
-            app:layout_constraintTop_toBottomOf="@+id/editTextRentAmount"
-            android:focusableInTouchMode="true"
             android:cursorVisible="false"
+            android:ems="10"
             android:focusable="false"
-           />
+            android:focusableInTouchMode="true"
+            android:hint="Joining Date"
+            android:inputType="date"
+            app:layout_constraintEnd_toEndOf="@+id/editTextRentAmount"
+            app:layout_constraintStart_toStartOf="@+id/editTextRentAmount"
+            app:layout_constraintTop_toBottomOf="@+id/editTextRentAmount" />
 
         <Button
             android:id="@+id/buttonSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="47dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="47dp"
             android:text="Save"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="@+id/editTextJoinDate"
-            app:layout_constraintTop_toBottomOf="@+id/editTextJoinDate"
-           />
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="@+id/guideline8"
+            app:layout_constraintTop_toBottomOf="@+id/editTextJoinDate" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="59dp"
+            android:text="User name"
+            app:layout_constraintBaseline_toBaselineOf="@+id/editTextTextPersonName"
+            app:layout_constraintEnd_toStartOf="@+id/editTextTextPersonName"
+            app:layout_constraintStart_toStartOf="@+id/guideline8" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="86dp"
+            android:text="Mobile "
+            app:layout_constraintBaseline_toBaselineOf="@+id/editTextMobileNumber"
+            app:layout_constraintEnd_toStartOf="@+id/editTextMobileNumber"
+            app:layout_constraintStart_toStartOf="@+id/guideline8" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="84dp"
+            android:text="Aadhar "
+            app:layout_constraintBaseline_toBaselineOf="@+id/editTextAadharNumber"
+            app:layout_constraintEnd_toStartOf="@+id/editTextAadharNumber"
+            app:layout_constraintStart_toStartOf="@+id/textView16" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="44dp"
+            android:text="Room number"
+            app:layout_constraintBaseline_toBaselineOf="@+id/editTextRentRoomNumber"
+            app:layout_constraintEnd_toStartOf="@+id/editTextRentRoomNumber"
+            app:layout_constraintStart_toStartOf="@+id/textView17" />
+
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="52dp"
+            android:text="Rent amount"
+            app:layout_constraintBaseline_toBaselineOf="@+id/editTextRentAmount"
+            app:layout_constraintEnd_toStartOf="@+id/editTextRentAmount"
+            app:layout_constraintStart_toStartOf="@+id/textView18" />
+
+        <TextView
+            android:id="@+id/textView24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="55dp"
+            android:text="Joining date"
+            app:layout_constraintBaseline_toBaselineOf="@+id/editTextJoinDate"
+            app:layout_constraintEnd_toStartOf="@+id/editTextJoinDate"
+            app:layout_constraintStart_toStartOf="@+id/textView23" />
+
+        <!--<ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

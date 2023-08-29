@@ -39,6 +39,9 @@ interface UserRegistrationDao {
     @Query("DELETE FROM rentPayment WHERE mobileNumber = :mobileNumber")
     fun deletepayUser(mobileNumber: String)
 
+    @Query("DELETE FROM rentPayment WHERE month = :month")
+    fun deletepayMonth(month: String)
+
     // powerWater bill table Insert
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPowerWaterPayment(powerWaterPayment: PowerWaterPayment)
@@ -54,5 +57,6 @@ interface UserRegistrationDao {
 
     @Query("DELETE FROM powerWaterBill WHERE mobileNumber = :mobileNumber")
     fun deletePowerBillUser(mobileNumber: String)
-
+    @Query("DELETE FROM powerWaterBill WHERE month = :month")
+    fun deletePowerMonth(month: String)
 }

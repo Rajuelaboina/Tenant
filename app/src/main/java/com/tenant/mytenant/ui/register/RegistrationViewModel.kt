@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.tenant.mytenant.userlistener.RegistrationListener
 
 class RegistrationViewModel(var listener: RegistrationListener): ViewModel() {
-   val userRegistration = UserRegistration("","","","",0.0,"",false)
+   val userRegistration = UserRegistration("",0,"","",0.0,"",false)
   val userNameTextWatcher: TextWatcher get() = object :TextWatcher{
       override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -29,7 +29,7 @@ class RegistrationViewModel(var listener: RegistrationListener): ViewModel() {
       }
 
       override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-          userRegistration.mobileNumber = s.toString().trim()
+          userRegistration.mobileNumber = s.toString().trim().toLong()
       }
 
       override fun afterTextChanged(s: Editable?) {

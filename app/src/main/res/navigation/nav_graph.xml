@@ -17,9 +17,9 @@
         <action
             android:id="@+id/action_HomeFragment_to_userPaymentFragment2"
             app:destination="@id/paymentListFragment" />
-        <action
+       <!-- <action
             android:id="@+id/action_HomeFragment_to_poweWaterListFragment"
-            app:destination="@id/powerWaterListFragment" />
+            app:destination="@id/powerWaterListFragment" />-->
 
     </fragment>
     <fragment
@@ -55,6 +55,10 @@
         <action
             android:id="@+id/action_paymentListFragment_to_segmentFragment"
             app:destination="@id/segmentFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_poweWaterListFragment"
+            app:destination="@id/powerWaterListFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/segmentFragment"

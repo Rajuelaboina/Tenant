@@ -91,7 +91,7 @@ class RegistrationFragment : Fragment(), RegistrationListener {
             CoroutineScope(IO).launch {
               UserDataBase.getInstance(requireContext()).userDao().insertUser(
                   UserRegistration(binding.editTextTextPersonName.text.toString().trim(),
-                  binding.editTextMobileNumber.text.toString().trim(),
+                  binding.editTextMobileNumber.text.toString().trim().toLong(),
                   binding.editTextAadharNumber.text.toString().trim(),
                   binding.editTextRentRoomNumber.text.toString().trim(),
                   binding.editTextRentAmount.text.toString().trim().toDouble(),

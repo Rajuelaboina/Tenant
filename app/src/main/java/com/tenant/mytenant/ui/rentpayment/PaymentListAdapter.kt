@@ -31,9 +31,10 @@ class PaymentListAdapter : RecyclerView.Adapter<PaymentListAdapter.MyViewHolder>
                     myListener.onItemClicked(position)
              }
         }
-       /* holder.itemView.setOnClickListener {
-            myListener.onItemClicked(list[position])
-        }*/
+        holder.binding.powerWaterBillButton.setOnClickListener {
+           // myListener.onItemClicked(list[position])
+            mypowerListener.powerItemClicked(list[position])
+        }
 
     }
 
@@ -50,8 +51,12 @@ class PaymentListAdapter : RecyclerView.Adapter<PaymentListAdapter.MyViewHolder>
     }
     companion object{
         lateinit var myListener: OnItemClicked
+        lateinit var mypowerListener: PowerWaterListener
         fun setOnItemSelectedListener(listener : OnItemClicked){
-            myListener =listener
+            this.myListener =listener
+        }
+        fun setOnPowerItemListener(listener: PowerWaterListener){
+            this.mypowerListener =listener
         }
     }
 }

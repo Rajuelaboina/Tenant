@@ -43,9 +43,9 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
         holder.binding.rentButton.setOnClickListener {
             myListener.onItemClicked(list[position])
         }
-        holder.binding.billButton.setOnClickListener {
+        /*holder.binding.billButton.setOnClickListener {
             myListener.onItemBillClicked(list[position])
-        }
+        }*/
 
         val items1: List<String>  = list[position].joinDate.split("-")
         val day = items1[0].toInt()
@@ -116,7 +116,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
         calendar.set(Calendar.MINUTE,30)
         calendar.set(Calendar.SECOND,0)
         calendar.set(Calendar.MILLISECOND, 0)
-        calendar.set(Calendar.AM_PM, Calendar.PM)
+        calendar.set(Calendar.AM_PM, Calendar.AM)
 
         val intent = Intent(context, MyBroadcastReceiver::class.java)
         val id = System.currentTimeMillis().toInt()

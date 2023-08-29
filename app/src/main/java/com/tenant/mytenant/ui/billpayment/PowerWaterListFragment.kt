@@ -3,6 +3,8 @@ package com.tenant.mytenant.ui.billpayment
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
@@ -13,13 +15,17 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tenant.mytenant.R
 import com.tenant.mytenant.database.UserDataBase
-import com.tenant.mytenant.databinding.DialogPaymentBinding
+import com.tenant.mytenant.databinding.DialogPowerpaymentBinding
 import com.tenant.mytenant.databinding.FragmentPoweWaterListBinding
 import com.tenant.mytenant.ui.register.UserRegistration
 import com.tenant.mytenant.userlistener.OnItemClicked
+import com.tenant.mytenant.utils.SwipeLeftDeleteCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,7 +38,7 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
     private val binding get() = _binding!!
     private  lateinit var  userRegistration: UserRegistration
     private lateinit var viewModel : PowerWaterListViewModel
-    private lateinit var dialogPaymentBinding: DialogPaymentBinding
+    private lateinit var dialogPaymentBinding: DialogPowerpaymentBinding
     private  var month = ""
     var mobileNumber = ""
     var year=""
@@ -42,9 +48,10 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
         // Inflate the layout for this fragment
         _binding = FragmentPoweWaterListBinding.inflate(inflater, container, false)
         userRegistration = arguments?.getSerializable("OK") as UserRegistration
-        mobileNumber = userRegistration.mobileNumber
+        month = arguments?.getString("MONTH").toString()
+        mobileNumber = userRegistration.mobileNumber.toString()
         viewModel = ViewModelProvider(this,
-            PowerWaterListViewModelFactory(requireContext(),userRegistration.mobileNumber)
+            PowerWaterListViewModelFactory(requireContext(),userRegistration.mobileNumber.toString())
         )[PowerWaterListViewModel::class.java]
         binding.viewModel =viewModel
         binding.executePendingBindings()
@@ -55,11 +62,11 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-           binding.listpaymentLinear.visibility = View.INVISIBLE
+         //  binding.listpaymentLinear.visibility = View.INVISIBLE
         showAllPaymets()
         year =  Calendar.getInstance().get(Calendar.YEAR).toString()
         //Log.e("year","year: $year")
-        binding.textViewMonth.text = "Month & Year"
+      //  binding.textViewMonth.text = "Month & Year"
         binding.fabPower.setOnClickListener {
             /*bundle.putSerializable("OK",userRegistration)
             val fragment = PowerWaterFragment()
@@ -69,18 +76,45 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
             //userShowDialog(-1,"Add New")
             showBottomSheetDialog(-1,"Add New")
         }
+        val swipeHandler = object : SwipeLeftDeleteCallback(requireActivity()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position :Int = viewHolder.adapterPosition
+                MaterialAlertDialogBuilder(requireActivity(), R.style.RoundShapeTheme)
+                    .setTitle("Do you want Delete!")
+                    .setPositiveButton("Yes") { dialog, which ->
+                        //SharedPrefManager.getInstance(applicationContext).isLogedout()
+                        //  binding.progressBar.visibility = View.VISIBLE
+                        CoroutineScope(Dispatchers.IO).launch {
+                           // UserDataBase.getInstance(requireActivity()).userDao().deletepayMonth(list[position].month)
+                            UserDataBase.getInstance(requireActivity()).userDao().deletePowerMonth(list[position].month)
+                        }
+                    }
+                    .setNegativeButton("Cancel") { dialog, which ->
+                        dialog.dismiss()
+                        // DisplayAllUsers()
+                    }
+                    .show()
+
+                Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                    showAllPaymets()
+                    // binding.progressBar.visibility = View.GONE
+                },3000)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerViewPowerPaymentList)
     }
 
     private fun showAllPaymets() {
         viewModel.getAllPayments()
         viewModel.list.observe(this) {
             if (it.isNotEmpty()){
-               binding.textViewNotFound.visibility = View.INVISIBLE
-                binding.listpaymentLinear.visibility = View.VISIBLE
+               //binding.textViewNotFound.visibility = View.INVISIBLE
+             //   binding.listpaymentLinear.visibility = View.VISIBLE
                 list = it as ArrayList<PowerWaterPayment>
                 viewModel.setAdapter(it)
             }else{
-               binding.textViewNotFound.visibility = View.VISIBLE
+            //   binding.textViewNotFound.visibility = View.VISIBLE
             }
         }
     }
@@ -92,7 +126,7 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
 
     @SuppressLint("SetTextI18n")
     private fun userShowDialog(position: Int, msg: String) {
-        dialogPaymentBinding = DialogPaymentBinding.inflate(layoutInflater)
+        dialogPaymentBinding = DialogPowerpaymentBinding.inflate(layoutInflater)
         // dialog = Dialog(requireContext())
 
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
@@ -107,24 +141,26 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
         dialogPaymentBinding.dueAmount.hint = "power & water bill due"
 
         var rentAmount: Double
-
+        dialogPaymentBinding.textViewMonth.setText(month).toString().trim()
         if (position == -1){
             rentAmount = 0.0
             dialogPaymentBinding.rentPaymentAmount.setText(rentAmount.toString().trim())
             dialogPaymentBinding.dueAmount.setText(rentAmount.toString().trim())
             dialogPaymentBinding.paidAmount.setText(rentAmount.toString().trim())
 
-            val indexofmonth = Calendar.getInstance().get(Calendar.MONTH)
-            dialogPaymentBinding.spinnerMonth.setSelection(indexofmonth)
+
+            //val indexofmonth = Calendar.getInstance().get(Calendar.MONTH)
+           // dialogPaymentBinding.spinnerMonth.setSelection(indexofmonth)
         }else{
             // list edit
             rentAmount = list[position].powerWaterBill.toDouble()
             dialogPaymentBinding.rentPaymentAmount.setText(rentAmount.toString().trim())
             dialogPaymentBinding.paidAmount.setText(list[position].powerWaterPaid.trim())
             dialogPaymentBinding.dueAmount.setText(list[position].powerWaterDue.trim())
+
             dialogPaymentBinding.rentPaymentAmount.isClickable = false
             dialogPaymentBinding.rentPaymentAmount.isEnabled = false
-            val array = resources.getStringArray(R.array.month)
+            /*val array = resources.getStringArray(R.array.month)
             for (i in array.indices){
                // Log.e("array","array: $i")
                 if (list[position].month == array[i]){
@@ -132,7 +168,7 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
                     dialogPaymentBinding.spinnerMonth.isEnabled = false
                     break
                 }
-            }
+            }*/
         }
         //due amount text color change
         dialogPaymentBinding.dueAmount.setTextColor(ContextCompat.getColor(requireContext(),
@@ -140,14 +176,14 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
         ))
 
         // select the month
-        dialogPaymentBinding.spinnerMonth.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+        /*dialogPaymentBinding.spinnerMonth.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 month = parent?.getItemAtPosition(position).toString()
                 // Log.e("ppppppp","spinner: $month")
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
-        }
+        }*/
     // editText pay bill amount
         dialogPaymentBinding.paidAmount.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -208,7 +244,7 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
     }
 
     private fun showBottomSheetDialog(position: Int, msg: String){
-        dialogPaymentBinding = DialogPaymentBinding.inflate(layoutInflater)
+        dialogPaymentBinding = DialogPowerpaymentBinding.inflate(layoutInflater)
         val dialog = BottomSheetDialog(requireActivity(),R.style.BottomSheetDialogStyle)
         dialog.setContentView(dialogPaymentBinding.root)
 
@@ -226,18 +262,19 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
             dialogPaymentBinding.rentPaymentAmount.setText(rentAmount.toString().trim())
             dialogPaymentBinding.dueAmount.setText(rentAmount.toString().trim())
             dialogPaymentBinding.paidAmount.setText(rentAmount.toString().trim())
-
-            val indexofmonth = Calendar.getInstance().get(Calendar.MONTH)
-            dialogPaymentBinding.spinnerMonth.setSelection(indexofmonth)
+            dialogPaymentBinding.textViewMonth.setText(month).toString().trim()
+           // val indexofmonth = Calendar.getInstance().get(Calendar.MONTH)
+            //dialogPaymentBinding.spinnerMonth.setSelection(indexofmonth)
         }else{
             // list edit
             rentAmount = list[position].powerWaterBill.toDouble()
             dialogPaymentBinding.rentPaymentAmount.setText(rentAmount.toString().trim())
             dialogPaymentBinding.paidAmount.setText(list[position].powerWaterPaid.trim())
             dialogPaymentBinding.dueAmount.setText(list[position].powerWaterDue.trim())
+            dialogPaymentBinding.textViewMonth.setText(list[position].month.trim())
           //  dialogPaymentBinding.rentPaymentAmount.isClickable = false
            // dialogPaymentBinding.rentPaymentAmount.isEnabled = false
-            val array = resources.getStringArray(R.array.month)
+           /* val array = resources.getStringArray(R.array.month)
             for (i in array.indices){
                 // Log.e("array","array: $i")
                 if (list[position].month == array[i]){
@@ -245,7 +282,7 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
                  //   dialogPaymentBinding.spinnerMonth.isEnabled = false
                     break
                 }
-            }
+            }*/
         }
         //due amount text color change
         dialogPaymentBinding.dueAmount.setTextColor(ContextCompat.getColor(requireContext(),
@@ -253,14 +290,14 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
         ))
 
         // select the month
-        dialogPaymentBinding.spinnerMonth.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+       /* dialogPaymentBinding.spinnerMonth.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 month = parent?.getItemAtPosition(position).toString()
                 // Log.e("ppppppp","spinner: $month")
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
-        }
+        }*/
         // editText pay bill amount
         dialogPaymentBinding.paidAmount.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

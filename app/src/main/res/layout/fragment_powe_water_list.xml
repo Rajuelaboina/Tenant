@@ -12,11 +12,12 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/ash"
         tools:context=".ui.billpayment.PowerWaterListFragment">
 
 
         <!-- TODO: Update blank fragment layout -->
-        <LinearLayout
+        <!--<LinearLayout
             android:id="@+id/listpaymentLinear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,18 +66,18 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
                 android:text="Due Amount"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-        </LinearLayout>
+        </LinearLayout>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView_PowerPaymentList"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:adapter="@{viewModel.PowerAdapter()}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/listpaymentLinear"
+            app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/paymentlist_item" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

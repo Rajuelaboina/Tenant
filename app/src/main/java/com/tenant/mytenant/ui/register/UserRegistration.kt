@@ -13,9 +13,9 @@ import java.io.Serializable
 data class UserRegistration (
     @ColumnInfo(name = "userName")
     var userName: String,
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "mobileNumber")
-    var mobileNumber: String,
+    var mobileNumber: Long,
     @ColumnInfo(name = "aadharNumber")
     var aadharNumber: String,
     @ColumnInfo(name = "roomNumber")
@@ -28,7 +28,7 @@ data class UserRegistration (
     var status: Boolean
         ): BaseObservable(), Serializable {
     fun isValidUser():Int{
-        return if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(mobileNumber) && !TextUtils.isEmpty(aadharNumber) && !TextUtils.isEmpty(roomNumber.toString())
+        return if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(mobileNumber.toString()) && !TextUtils.isEmpty(aadharNumber) && !TextUtils.isEmpty(roomNumber.toString())
             && !TextUtils.isEmpty(rentAmount.toString()) && !TextUtils.isEmpty(joinDate) ){
             -1   //success
         }else{

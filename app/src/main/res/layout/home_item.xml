@@ -155,14 +155,15 @@
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="3dp"
+                    android:layout_marginEnd="5dp"
                     android:layout_weight="1"
                     android:text="Rent payment"
                     android:textAllCaps="false"
                     android:textColor="@color/purple_700"
-                    app:cornerRadius="10dp" />
+                    app:cornerRadius="10dp"
+                    android:gravity="end|center"/>
 
-                <Button
+               <!-- <Button
                     android:id="@+id/billButton"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="0dp"
@@ -171,7 +172,7 @@
                     android:text="Bill payment"
                     android:textAllCaps="false"
                     android:textColor="@color/purple_700"
-                    app:cornerRadius="10dp" />
+                    app:cornerRadius="10dp" />-->
             </LinearLayout>
 
 

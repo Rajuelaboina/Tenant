@@ -39,7 +39,7 @@ class PowerWaterFragment : Fragment(), powerBillSelectedListener {
 
         viewModel = ViewModelProvider(
             this,
-            PowerWaterViewModelFactory(this, requireContext(), userRegistration.mobileNumber)
+            PowerWaterViewModelFactory(this, requireContext(), userRegistration.mobileNumber.toString())
         )[PowerWaterViewModel::class.java]
         binding.viewModel =viewModel
         binding.executePendingBindings()

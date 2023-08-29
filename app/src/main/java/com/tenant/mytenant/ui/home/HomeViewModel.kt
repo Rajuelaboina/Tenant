@@ -15,7 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
-class HomeViewModel:ViewModel() {
+class HomeViewModel(var listener: FabListener):ViewModel() {
      val list = MutableLiveData<List<UserRegistration>>()
      private var adapter = HomeAdapter()
     fun getAllUsers(context: Context){
@@ -33,6 +33,7 @@ class HomeViewModel:ViewModel() {
 
     fun setOnClick(view: View){
        Log.e("Fab","Fab><<<<<")
+       listener.fabClicked()
     }
 
 }

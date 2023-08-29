@@ -2,6 +2,8 @@ package com.tenant.mytenant.ui.rentpayment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -11,7 +13,11 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tenant.mytenant.R
@@ -20,6 +26,8 @@ import com.tenant.mytenant.databinding.DialogPaymentBinding
 import com.tenant.mytenant.databinding.FragmentPaymentListBinding
 import com.tenant.mytenant.ui.register.UserRegistration
 import com.tenant.mytenant.userlistener.OnItemClicked
+import com.tenant.mytenant.utils.SwipeLeftDeleteCallback
+import com.tenant.mytenant.utils.SwipeToDeleteCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
@@ -27,7 +35,7 @@ import java.util.*
 
 
 @Suppress("DEPRECATION")
-class PaymentListFragment : Fragment(), OnItemClicked {
+class PaymentListFragment : Fragment(), OnItemClicked, PowerWaterListener {
   //  lateinit var firebaseFireStore : FirebaseFirestore
     private var _binding: FragmentPaymentListBinding? = null
     private val  binding get() = _binding!!
@@ -50,16 +58,17 @@ class PaymentListFragment : Fragment(), OnItemClicked {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.listpaymentLinear.visibility = View.INVISIBLE
+       // binding.listpaymentLinear.visibility = View.INVISIBLE
         userRegistration = arguments?.getSerializable("OK") as UserRegistration
-        mobileNumber = userRegistration.mobileNumber
+        mobileNumber = userRegistration.mobileNumber.toString()
 
         binding.payListViewModel = viewModel
         binding.executePendingBindings()
         showAllPaymets()
+        //showBottomSheetDialog(-1,"Add New")
         year =  Calendar.getInstance().get(Calendar.YEAR).toString()
         //Log.e("year","year: $year")
-        binding.textViewMonth.text = "Month & Year"
+        //binding.textViewMonth.text = "Month & Year"
         binding.fab.setOnClickListener {
            // userShowDialog(-1,"Add New")
             showBottomSheetDialog(-1,"Add New")
@@ -70,6 +79,34 @@ class PaymentListFragment : Fragment(), OnItemClicked {
         }
         //item clicked
         PaymentListAdapter.setOnItemSelectedListener(this)
+        PaymentListAdapter.setOnPowerItemListener(this)
+        val swipeHandler = object : SwipeLeftDeleteCallback(requireActivity()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position :Int = viewHolder.adapterPosition
+                MaterialAlertDialogBuilder(requireActivity(), R.style.RoundShapeTheme)
+                    .setTitle("Do you want Delete!")
+                    .setPositiveButton("Yes") { dialog, which ->
+                        //SharedPrefManager.getInstance(applicationContext).isLogedout()
+                        //  binding.progressBar.visibility = View.VISIBLE
+                        CoroutineScope(IO).launch {
+                            UserDataBase.getInstance(requireActivity()).userDao().deletepayMonth(list[position].month)
+                            UserDataBase.getInstance(requireActivity()).userDao().deletePowerMonth(list[position].month)
+                        }
+                    }
+                    .setNegativeButton("Cancel") { dialog, which ->
+                        dialog.dismiss()
+                        // DisplayAllUsers()
+                    }
+                    .show()
+
+                Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                    showAllPaymets()
+                    // binding.progressBar.visibility = View.GONE
+                },3000)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerViewPaymentList)
     }
 
 
@@ -79,7 +116,7 @@ class PaymentListFragment : Fragment(), OnItemClicked {
         viewModel.list.observe(this) {
             if (it.isNotEmpty()) {
                 binding.textViewNotFound.visibility = View.INVISIBLE
-                binding.listpaymentLinear.visibility = View.VISIBLE
+              //  binding.listpaymentLinear.visibility = View.VISIBLE
                 viewModel.setAdapter(it)
                 list = it as ArrayList<Payment>
             }else{
@@ -96,6 +133,7 @@ class PaymentListFragment : Fragment(), OnItemClicked {
                     viewModel.setAdapter(list)
             }*/
         }
+
     }
 
     override fun onItemClicked(position: Int) {
@@ -371,5 +409,15 @@ class PaymentListFragment : Fragment(), OnItemClicked {
            )
        }
 
+    }
+
+    override fun powerItemClicked(payment: Payment) {
+        val bundle = Bundle()
+        bundle.putSerializable("OK", userRegistration)
+        bundle.putString("MONTH", payment.month)
+        findNavController().navigate(
+            R.id.action_HomeFragment_to_poweWaterListFragment,
+            bundle
+        )
     }
 }

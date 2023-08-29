@@ -88,7 +88,7 @@ class UserPaymentFragment : Fragment() {
         binding.savePayment.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 UserDataBase.getInstance(requireContext()).userDao().paymentUpdate(
-                    Payment(payment.id,payment.month,payment.year, userRegistration.mobileNumber,
+                    Payment(payment.id,payment.month,payment.year, userRegistration.mobileNumber.toString(),
                         binding.rentPaymentAmount.text.toString().toDouble(),
                         binding.paidAmount.text.toString().toDouble(),
                         binding.dueAmount.text.toString().toDouble())
