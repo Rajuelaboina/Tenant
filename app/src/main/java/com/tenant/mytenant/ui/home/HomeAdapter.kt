@@ -47,17 +47,9 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
             myListener.onItemBillClicked(list[position])
         }*/
 
-        val items1: List<String>  = list[position].joinDate.split("-")
+        /*val items1: List<String>  = list[position].joinDate.split("-")
         val day = items1[0].toInt()
-        //Log.e("db_day>>>>>>>","db_day: $day")
-       // val month = items1[1].toInt()
-       // val year = items1[2].toInt()
-        /*var day2 = 0
-        if (5 < day){
-             day2 = day-5
-        }else{
-            day2 = 1
-        }*/
+
 
         val smpl = SimpleDateFormat("dd-M-yyyy")
         val cal2 = Calendar.getInstance()
@@ -66,25 +58,10 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
         //Log.e("current_date>>>>>>>","current_date: $current_day")
         val items2: List<String>  = current_date.split("-")
         val day_current = items2[0].toInt()
-        val day_month = items2[1].toInt()
-        //Log.e("current_day>>>>>>>","current_day: $day_current")
-       /* if (day_current == day) {
-           // Log.e("current_day>>>>>>>","<>Equal><<<< $position")
-            // status update
-           *//* CoroutineScope(Dispatchers.IO).launch {
-                UserDataBase.getInstance(context).userDao().getUpdate(
-                    UserRegistration(
-                        list[position].userName,
-                        list[position].mobileNumber,
-                        list[position].aadharNumber,
-                        list[position].roomNumber,
-                        list[position].rentAmount,
-                        list[position].joinDate,true
-                    )
-                )
-            }*//*
-        }*/
-        if (smpl.parse(list[position].joinDate).before(smpl.parse(current_date))){
+        val day_month = items2[1].toInt()*/
+
+        // alarm set
+        /*if (smpl.parse(list[position].joinDate).before(smpl.parse(current_date))){
             Log.e("before","before")
         }else if (smpl.parse(list[position].joinDate).after(smpl.parse(current_date))){
             Log.e("else if ","else if ")
@@ -92,7 +69,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
         }else{
             Log.e("celse","else")
 
-        }
+        }*/
 
         if (list[position].status){
             holder.binding.cardView1.setBackgroundColor(ContextCompat.getColor(context,R.color.background))

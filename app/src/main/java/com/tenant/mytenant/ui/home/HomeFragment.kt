@@ -287,7 +287,7 @@ class HomeFragment : Fragment(), onItemClickListener, /*MenuProvider,*/ FabListe
         viewModel.list.observe(this) { it ->
             // binding.recyclerView
             binding.progressBar.visibility = View.GONE
-            if (it != null) {
+            if (it.isNotEmpty()) {
                 userList = it
                 viewModel.setAdapter(it)
             }

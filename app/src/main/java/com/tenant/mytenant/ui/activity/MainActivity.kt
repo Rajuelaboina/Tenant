@@ -1,27 +1,27 @@
 package com.tenant.mytenant.ui.activity
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
+import android.content.DialogInterface
 import android.os.Bundle
+import android.view.KeyEvent
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.NavController
-import com.tenant.mytenant.MyBroadcastReceiver
 import com.tenant.mytenant.R
 import com.tenant.mytenant.databinding.ActivityMainBinding
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
 
+class MainActivity : AppCompatActivity() {
+    var backPressedTime: Long = 0
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
+        supportActionBar?.setIcon(R.drawable.logo_2)
 
          navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
@@ -116,4 +117,41 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
+    // twice back button pressed ----//
+
+    /*override fun onBackPressed() {
+        if (backPressedTime + 3000 > System.currentTimeMillis()) {
+            super.onBackPressed()
+            finish()
+        } else {
+            Toast.makeText(this, "Press back again to leave the app.", Toast.LENGTH_LONG).show()
+        }
+        backPressedTime = System.currentTimeMillis()
+    }*/
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            exitByBackKey()
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    private fun exitByBackKey() {
+         AlertDialog.Builder(this)
+            .setMessage("Do you want to exit application?")
+            .setPositiveButton("Yes", DialogInterface.OnClickListener { arg0, arg1 ->
+
+                // do something when the button is clicked
+                finish()
+                //close();
+            })
+            .setNegativeButton("No", // do something when the button is clicked
+                DialogInterface.OnClickListener { arg0, arg1 ->
+
+                })
+            .show()
+    }
+
+
 }
