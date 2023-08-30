@@ -3,6 +3,7 @@ package com.tenant.mytenant.ui.rentpayment
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tenant.mytenant.R
@@ -35,7 +36,9 @@ class PaymentListAdapter : RecyclerView.Adapter<PaymentListAdapter.MyViewHolder>
            // myListener.onItemClicked(list[position])
             mypowerListener.powerItemClicked(list[position])
         }
-
+        if (list[position].dueAmount.toString().isNotEmpty()){
+            holder.binding.textView4.setTextColor(ContextCompat.getColor(holder.itemView.context,R.color.red))
+        }
     }
 
     override fun getItemCount(): Int {

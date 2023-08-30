@@ -2,6 +2,7 @@ package com.tenant.mytenant.ui.billpayment
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.tenant.mytenant.R
@@ -29,6 +30,9 @@ class PowerWaterAdapter: RecyclerView.Adapter<PowerWaterAdapter.MyViewHolder>() 
             holder.itemView.setOnClickListener {
                 listener.onItemClicked(position)
             }
+        }
+        if (list[position].powerWaterDue.isNotEmpty()){
+            holder.binding.textView4.setTextColor(ContextCompat.getColor(holder.itemView.context,R.color.red))
         }
     }
 
