@@ -40,7 +40,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
-                        android:text="Month &amp; Year   "
+                        android:text="Month &amp; Year   - "
                         android:textSize="18sp"
                         android:textStyle="bold"
                         android:maxLines="1"/>

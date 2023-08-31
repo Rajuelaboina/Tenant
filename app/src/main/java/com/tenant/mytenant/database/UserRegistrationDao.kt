@@ -11,8 +11,8 @@ interface UserRegistrationDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertUser(userRegistration: UserRegistration)
 
-   /* @Query("SELECT EXISTS(SELECT * FROM rentPayment WHERE month = :month AND year = :year AND mobileNumber = :mobileNumber )")
-    fun isRecordExistsUserId(month: String,year:String,mobileNumber:String): Boolean*/
+   /* @Query("SELECT EXISTS(SELECT * FROM Registration WHERE roomNumber = :roomNumber AND mobileNumber = :mobileNumber )")
+    fun isRoomExists(roomNumber: String,mobileNumber:String): Boolean*/
 
     @Query("SELECT * FROM Registration")
      fun getAllUsers(): List<UserRegistration>

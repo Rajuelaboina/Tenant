@@ -4,16 +4,8 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
-import android.text.style.UnderlineSpan
 import android.view.*
-import androidx.core.content.ContextCompat
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -26,6 +18,7 @@ import com.tenant.mytenant.databinding.DialogRegistrationBinding
 import com.tenant.mytenant.databinding.FragmentHomeBinding
 import com.tenant.mytenant.ui.register.UserRegistration
 import com.tenant.mytenant.userlistener.onItemClickListener
+import com.tenant.mytenant.utils.DateUtils
 import com.tenant.mytenant.utils.SwipeToDeleteCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -159,10 +152,10 @@ class HomeFragment : Fragment(), onItemClickListener, /*MenuProvider,*/ FabListe
             day = c.get(Calendar.DAY_OF_MONTH)
             registrationBinding.editTextJoinDate.setText(day.toString() + "-" + (month + 1) + "-" + year)
 
-             setSpanale("Tenant Registration !",0,6,21)
+            registrationBinding.textView.text = DateUtils.setSpannable(requireActivity(),"Tenant Registration !",0,6,21)
 
         }else{
-            setSpanale("Tenant Details Update !",0,6,23)
+            registrationBinding.textView.text =  DateUtils.setSpannable(requireActivity(),"Tenant Details Update !",0,6,23)
             registrationBinding.editTextTextPersonName.isEnabled = false
             registrationBinding.editTextMobileNumber.isEnabled = false
             registrationBinding.editTextAadharNumber.isEnabled = false
@@ -198,7 +191,7 @@ class HomeFragment : Fragment(), onItemClickListener, /*MenuProvider,*/ FabListe
 
     }
 
-    private fun setSpanale(string: String, sp1: Int, sp2: Int, sp3: Int) {
+    /*private fun setSpanale(string: String, sp1: Int, sp2: Int, sp3: Int) {
         val spannable =SpannableString(string)
         spannable.setSpan(UnderlineSpan(),0,spannable.length,0)
         val foregroundSpan = ForegroundColorSpan(ContextCompat.getColor(requireActivity(),R.color.purple_700))
@@ -206,7 +199,7 @@ class HomeFragment : Fragment(), onItemClickListener, /*MenuProvider,*/ FabListe
         val foregroundSpan2 = ForegroundColorSpan(ContextCompat.getColor(requireActivity(),R.color.red))
         spannable.setSpan(foregroundSpan2, sp2, sp3,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         registrationBinding.textView.text = spannable
-    }
+    }*/
 
     // register data insert in database
    private fun dataInsert(){

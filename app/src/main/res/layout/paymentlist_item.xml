@@ -39,7 +39,7 @@
                     android:id="@+id/textViewMonth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Month &amp; Year   "
+                    android:text="Month &amp; Year   - "
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:maxLines="1"/>
@@ -72,7 +72,7 @@
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Paid Amount  =  \u20B9  "
+                    android:text="Paid amount  =  \u20B9  "
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:maxLines="1"/>
@@ -96,7 +96,7 @@
                     android:id="@+id/textView12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Due Amount  =  \u20B9  "
+                    android:text="Due amount  =  \u20B9  "
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:maxLines="1"/>

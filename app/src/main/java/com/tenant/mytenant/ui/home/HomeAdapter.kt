@@ -1,5 +1,6 @@
 package com.tenant.mytenant.ui.home
 
+import android.app.Activity
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.tenant.mytenant.MyBroadcastReceiver
@@ -18,6 +20,7 @@ import com.tenant.mytenant.R
 import com.tenant.mytenant.databinding.HomeItemBinding
 import com.tenant.mytenant.ui.register.UserRegistration
 import com.tenant.mytenant.userlistener.onItemClickListener
+import com.tenant.mytenant.utils.DateUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,6 +46,10 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
         holder.binding.rentButton.setOnClickListener {
             myListener.onItemClicked(list[position])
         }
+       // holder.binding.rentButton.text = DateUtils.setSpannable(context as FragmentActivity,"Rent payment",0,4,12)
+      // val string = DateUtils.getMonthName(list[position].joinDate)
+        //Log.e("string: >>>>>>>","string: "+string)
+       // holder.binding.textView4.text = string
         /*holder.binding.billButton.setOnClickListener {
             myListener.onItemBillClicked(list[position])
         }*/

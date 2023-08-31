@@ -95,5 +95,13 @@
         </item>
         <item name="backgroundTint">@color/purple_500</item>
     </style>
+    
+    <style name="customTextView" parent="@android:style/Widget.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:maxLines">1</item>
+    </style>
 
 </resources>
