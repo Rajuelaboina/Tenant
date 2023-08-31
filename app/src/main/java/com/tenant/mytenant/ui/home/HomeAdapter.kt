@@ -72,7 +72,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
         }*/
 
         if (list[position].status){
-            holder.binding.cardView1.setBackgroundColor(ContextCompat.getColor(context,R.color.background))
+            holder.binding.cardView1.setBackgroundResource(R.drawable.background)
 
         }
 

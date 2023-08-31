@@ -11,84 +11,93 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView1"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:padding="0dp"
-        android:layout_margin="5dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="2dp"
         app:cardCornerRadius="10dp">
 
         <LinearLayout
             android:padding="10dp"
-            android:paddingStart="10dp"
+            android:paddingStart="20dp"
             android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:paddingStart="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/textViewMonth"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/month_year"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:layout_weight="0"
+                        android:text="Month &amp; Year   "
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:maxLines="1"/>
                     <TextView
                         android:id="@+id/textView2"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{':'+model.month.substring(0,3)+' '+ '-'+ ' ' +model.year}"
-                        android:layout_weight="1"
-                        android:textSize="16sp"
+                        android:text="@{model.month.substring(0,3)+' '+ '-'+ ' ' +model.year}"
+                        android:layout_weight="0"
+                        android:textSize="18sp"
                         android:gravity="start|center"
-                        android:textStyle="normal"/>
+                        android:textStyle="normal"
+                        android:maxLines="1"/>
                 </LinearLayout>
 
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="3dp"
+                android:background="?android:attr/listDivider" />
+
                 <LinearLayout
-                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:paddingStart="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/textView11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
                         android:gravity="center"
-                        android:text="Paid : "
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:text="Paid amount    =  \u20B9   "
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:maxLines="1"/>
                     <TextView
                         android:id="@+id/textViewJoinDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
                         android:gravity="center"
-                        android:text="@{model.powerWaterPaid}" />
+                        android:textSize="18sp"
+                        android:text="@{model.powerWaterPaid}"
+                        android:maxLines="1"/>
                 </LinearLayout>
-            </LinearLayout>
 
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:paddingStart="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
@@ -100,46 +109,49 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
                         android:gravity="center"
-                        android:text="Bill amount : "
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:text="Bill amount     =    \u20B9   "
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:maxLines="1"/>
                     <TextView
                         android:id="@+id/textView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
                         android:gravity="center"
-                        android:text="@{model.powerWaterBill}" />
+                        android:textSize="18sp"
+                        android:text="@{model.powerWaterBill}"
+                        android:maxLines="1"/>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:paddingStart="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/textView12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
                         android:gravity="center"
-                        android:text="Due : "
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:text="Due amount    =   \u20B9   "
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:maxLines="1"/>
                     <TextView
                         android:id="@+id/textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
                         android:gravity="center"
-                        android:text="@{model.powerWaterDue}" />
-
+                        android:textColor="@color/red"
+                        android:text="@{model.powerWaterDue}"
+                        android:textSize="18sp"
+                        android:maxLines="1"/>
                 </LinearLayout>
-            </LinearLayout>
-
-
-
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -50,6 +49,7 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
         userRegistration = arguments?.getSerializable("OK") as UserRegistration
         month = arguments?.getString("MONTH").toString()
         mobileNumber = userRegistration.mobileNumber.toString()
+        year =  Calendar.getInstance().get(Calendar.YEAR).toString()
         viewModel = ViewModelProvider(this,
             PowerWaterListViewModelFactory(requireContext(),userRegistration.mobileNumber.toString())
         )[PowerWaterListViewModel::class.java]
@@ -64,7 +64,7 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
         super.onViewCreated(view, savedInstanceState)
          //  binding.listpaymentLinear.visibility = View.INVISIBLE
         showAllPaymets()
-        year =  Calendar.getInstance().get(Calendar.YEAR).toString()
+
         //Log.e("year","year: $year")
       //  binding.textViewMonth.text = "Month & Year"
         binding.fabPower.setOnClickListener {
@@ -106,9 +106,9 @@ class PowerWaterListFragment : Fragment(), OnItemClicked {
     }
 
     private fun showAllPaymets() {
-        viewModel.getAllPayments()
+        viewModel.getAllPayments(month,year)
         viewModel.list.observe(this) {
-            if (it.isNotEmpty()){
+            if (it!=null){
                //binding.textViewNotFound.visibility = View.INVISIBLE
              //   binding.listpaymentLinear.visibility = View.VISIBLE
                 list = it as ArrayList<PowerWaterPayment>

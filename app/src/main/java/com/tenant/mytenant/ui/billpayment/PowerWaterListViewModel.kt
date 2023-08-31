@@ -11,9 +11,9 @@ import kotlinx.coroutines.launch
 class PowerWaterListViewModel(var context: Context, var mobileNumber: String) : ViewModel() {
     val list = MutableLiveData<List<PowerWaterPayment>>()
    var adapter = PowerWaterAdapter()
-    fun getAllPayments(){
+    fun getAllPayments(month: String, year: String) {
       CoroutineScope(IO).launch {
-        list.postValue(UserDataBase.getInstance(context).userDao().getUserAllPowerPayments(mobileNumber))
+        list.postValue(UserDataBase.getInstance(context).userDao().getUserAllPowerPayments(month,year,mobileNumber))
       }
     }
 
