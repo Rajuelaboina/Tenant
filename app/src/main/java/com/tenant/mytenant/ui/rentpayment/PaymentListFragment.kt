@@ -13,22 +13,24 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.FirebaseApp
-import com.google.firebase.firestore.FirebaseFirestore
 import com.tenant.mytenant.R
 import com.tenant.mytenant.database.UserDataBase
 import com.tenant.mytenant.databinding.DialogPaymentBinding
+import com.tenant.mytenant.databinding.DialogPowerpaymentBinding
 import com.tenant.mytenant.databinding.FragmentPaymentListBinding
+import com.tenant.mytenant.ui.billpayment.PowerWaterListViewModel
+import com.tenant.mytenant.ui.billpayment.PowerWaterListViewModelFactory
+import com.tenant.mytenant.ui.billpayment.PowerWaterPayment
 import com.tenant.mytenant.ui.register.UserRegistration
 import com.tenant.mytenant.userlistener.OnItemClicked
+import com.tenant.mytenant.utils.DateUtils
 import com.tenant.mytenant.utils.SwipeLeftDeleteCallback
-import com.tenant.mytenant.utils.SwipeToDeleteCallback
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.util.*
@@ -42,14 +44,19 @@ class PaymentListFragment : Fragment(), OnItemClicked, PowerWaterListener {
     private lateinit var viewModel: PaymentListViewModel
     private lateinit var  userRegistration: UserRegistration
     private lateinit var dialogPaymentBinding: DialogPaymentBinding
+    private lateinit var dialogPowerpaymentBinding: DialogPowerpaymentBinding
+    private lateinit var powerViewModel : PowerWaterListViewModel
     private  var month = ""
     var mobileNumber = ""
     var year=""
+    var powerId: Int = 0
     var list = ArrayList<Payment>()
+    var powerList = ArrayList<PowerWaterPayment>()
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View {
         // Inflate the layout for this fragment
          _binding = FragmentPaymentListBinding.inflate(inflater,container,false)
         viewModel= ViewModelProvider(this)[PaymentListViewModel::class.java]
+
        // FirebaseApp.initializeApp(requireContext())
        // firebaseFireStore = FirebaseFirestore.getInstance()
         return binding.root
@@ -69,6 +76,12 @@ class PaymentListFragment : Fragment(), OnItemClicked, PowerWaterListener {
         year =  Calendar.getInstance().get(Calendar.YEAR).toString()
         //Log.e("year","year: $year")
         //binding.textViewMonth.text = "Month & Year"
+
+        // power and water get data
+        powerViewModel = ViewModelProvider(this,
+            PowerWaterListViewModelFactory(requireContext(),userRegistration.mobileNumber.toString())
+        )[PowerWaterListViewModel::class.java]
+
         binding.fab.setOnClickListener {
            // userShowDialog(-1,"Add New")
             showBottomSheetDialog(-1,"Add New")
@@ -273,6 +286,7 @@ class PaymentListFragment : Fragment(), OnItemClicked, PowerWaterListener {
         val alertDialog = BottomSheetDialog(requireContext(),R.style.BottomSheetDialogStyle)
         dialogPaymentBinding = DialogPaymentBinding.inflate(layoutInflater)
         alertDialog.setContentView(dialogPaymentBinding.root)
+        dialogPaymentBinding.textViewRentPaymentDialogTitle.text = DateUtils.setSpannable(requireActivity(),"Rent Payment",0,5,12)
 
         var rentAmount: Double
 
@@ -350,6 +364,14 @@ class PaymentListFragment : Fragment(), OnItemClicked, PowerWaterListener {
                                 dialogPaymentBinding.paidAmount.text.toString().toDouble(),
                                 dialogPaymentBinding.dueAmount.text.toString().toDouble())
                         )
+                        // save the data from power and water bill also
+                        UserDataBase.getInstance(requireContext()).userDao().insertPowerWaterPayment(
+                            PowerWaterPayment(0, month,year, mobileNumber,
+                                "0",
+                                "0",
+                                "0")
+                        )
+
                         refreshData("Payment save successfully")
                     }else{
                         refreshData("Month already Exists")
@@ -416,13 +438,79 @@ class PaymentListFragment : Fragment(), OnItemClicked, PowerWaterListener {
 
     }
 
-    override fun powerItemClicked(payment: Payment) {
-        val bundle = Bundle()
+    override fun powerItemClicked(payment: Payment, position: Int) {
+       /* val bundle = Bundle()
         bundle.putSerializable("OK", userRegistration)
         bundle.putString("MONTH", payment.month)
         findNavController().navigate(
             R.id.action_HomeFragment_to_poweWaterListFragment,
             bundle
-        )
+        )*/
+        showPowerWaterAllPaymets(position)
+        showWaterBillDialog(position)
     }
+
+    private fun showWaterBillDialog(position: Int) {
+        var powerBillAmount: Double = 0.0
+        dialogPowerpaymentBinding = DialogPowerpaymentBinding.inflate(layoutInflater)
+        val dialog = BottomSheetDialog(requireActivity(),R.style.BottomSheetDialogStyle)
+        dialog.setContentView(dialogPowerpaymentBinding.root)
+        dialogPowerpaymentBinding.textViewDialogTitle .text = DateUtils.setSpannable(requireActivity(),"Power & Water Payment",0,14,21)
+        // editText pay bill amount
+        dialogPowerpaymentBinding.paidAmount.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                var paidAmont = 0.0
+                if (s.toString().isNotEmpty()){
+                    powerBillAmount =dialogPowerpaymentBinding.rentPaymentAmount.text.toString().toDouble()
+                    paidAmont = s!!.toString().toDouble()
+                    val due = powerBillAmount.minus(paidAmont)
+                    dialogPowerpaymentBinding.dueAmount.setText(due.toString())
+                    dialogPowerpaymentBinding.dueAmount.setTextColor(ContextCompat.getColor(requireContext(),
+                        R.color.red
+                    ))
+                }else{
+                    val due = powerBillAmount.minus(paidAmont)
+                    dialogPowerpaymentBinding.dueAmount.setText(due.toString())
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
+        //--------- save --------- //
+        dialogPowerpaymentBinding.savePayment.setOnClickListener {
+
+            CoroutineScope(Dispatchers.IO).launch {
+                   UserDataBase.getInstance(requireContext()).userDao().powerBillUpdate(
+                            PowerWaterPayment(powerId, list[position].month,year, mobileNumber,
+                                dialogPowerpaymentBinding.rentPaymentAmount.text.toString(),
+                                dialogPowerpaymentBinding.paidAmount.text.toString(),
+                                dialogPowerpaymentBinding.dueAmount.text.toString())
+                   )
+                        refreshData("Payment  updated successfully")
+
+            }
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+    private fun showPowerWaterAllPaymets(position: Int) {
+        //month = list[position].month
+
+        viewModel.getAllPowerPayments(requireContext(),mobileNumber,list[position].month,year)
+        viewModel.powerList.observe(this){
+            if (it.isNotEmpty()){
+                //Log.e("LIST","LIST: ${it[0].id}")
+                powerId =it[0].id
+                dialogPowerpaymentBinding.textViewMonth.setText(it[0].month)
+                dialogPowerpaymentBinding.rentPaymentAmount.setText(it[0].powerWaterBill)
+                dialogPowerpaymentBinding.paidAmount.setText(it[0].powerWaterPaid)
+                dialogPowerpaymentBinding.dueAmount.setText(it[0].powerWaterDue)
+                powerList = it as ArrayList<PowerWaterPayment>
+
+            }
+        }
+    }
+
 }

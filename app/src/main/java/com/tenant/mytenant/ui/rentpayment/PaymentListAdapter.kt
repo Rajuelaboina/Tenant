@@ -33,7 +33,7 @@ class PaymentListAdapter : RecyclerView.Adapter<PaymentListAdapter.MyViewHolder>
         }
         holder.binding.powerWaterBillButton.setOnClickListener {
            // myListener.onItemClicked(list[position])
-            mypowerListener.powerItemClicked(list[position])
+            mypowerListener.powerItemClicked(list[position],position)
         }
 
     }

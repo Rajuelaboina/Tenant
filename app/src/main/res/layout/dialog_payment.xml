@@ -10,6 +10,15 @@
         tools:context=".ui.fragment.UserPaymentFragment"
         android:padding="4dp"
         android:layout_margin="5dp">
+        <TextView
+            android:id="@+id/textViewRentPaymentDialogTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rent Payment "
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:layout_marginBottom="5dp"/>
      <LinearLayout
             android:padding="8dp"
             android:background="@drawable/background"
@@ -49,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="@string/rent_amount"
+                android:text="Rent amount : "
                 android:textSize="14sp"
                 android:textStyle="bold"/>
 
@@ -59,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="@string/rent_amount"
+                android:hint="Rent amount"
                 android:importantForAutofill="no"
                 android:inputType="number"
                 tools:ignore="MissingConstraints,DuplicateSpeakableTextCheck,TouchTargetSizeCheck,VisualLintTextFieldSize"
@@ -76,7 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="@string/paid_amount"
+                android:text="Paid amount : "
                 android:textSize="14sp"
                 android:textStyle="bold"/>
 
@@ -86,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:hint="@string/paid_amount"
+                android:hint="Paid amount"
                 android:importantForAutofill="no"
                 android:inputType="number"
                 tools:ignore="MissingConstraints,DuplicateSpeakableTextCheck,TouchTargetSizeCheck,VisualLintTextFieldSize"
@@ -103,7 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="@string/due_amount"
+                android:text="Due amount : "
                 android:textSize="14sp"
                 android:textStyle="bold"/>
 
@@ -117,27 +126,23 @@
                 android:ems="10"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="@string/due_amount"
+                android:hint="Due amount"
                 android:importantForAutofill="no"
                 android:inputType="none"
                 tools:ignore="MissingConstraints,TouchTargetSizeCheck,VisualLintTextFieldSize"
                 tools:targetApi="o" />
         </LinearLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/save_payment"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="4dp"
             android:text="@string/save"
             android:textAllCaps="false"
-            app:layout_constraintBottom_toTopOf="@+id/guideline6"
-            app:layout_constraintEnd_toStartOf="@+id/guideline7"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/guideline4"
-            app:layout_constraintTop_toBottomOf="@+id/dueAmount"
-            app:layout_constraintVertical_bias="0.2"
-            tools:ignore="VisualLintButtonSize" />
+            android:layout_gravity="center"
+            app:cornerRadius="20dp"
+            android:layout_marginBottom="4dp"/>
 
 
     </LinearLayout>
