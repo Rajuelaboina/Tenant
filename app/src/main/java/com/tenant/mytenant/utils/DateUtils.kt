@@ -96,14 +96,14 @@ class DateUtils {
            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                try {
                    val items1: List<String>  = str.split("-")
-                   val day = items1[0].toInt()
-                   val month = items1[1].toInt()
-                   val year = items1[2].toInt()
+                   val day = items1[0].trim().toInt()
+                   val month = items1[1].trim().toInt()
+                   val year = items1[2].trim().toInt()
 
-                   val calendar = Calendar.getInstance()
-                    calendar.set(Calendar.YEAR,year)
-                      calendar.set(Calendar.MONTH,month)
-                     calendar.set(Calendar.DAY_OF_MONTH,day)
+                      val calendar = Calendar.getInstance()
+                      calendar.set(Calendar.YEAR,year)
+                      calendar.set(Calendar.MONTH,month-1)
+                      calendar.set(Calendar.DAY_OF_MONTH,day)
                    val date1 = calendar.time
                    val input = SimpleDateFormat("dd-MMM-YYYY")
                    date = input.format(date1)

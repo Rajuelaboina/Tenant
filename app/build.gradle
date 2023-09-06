@@ -24,9 +24,10 @@ android {
             minifyEnabled true // enables ProGuard
            // useProguard false    // obfuscate
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
+            debuggable true
         }
         release {
+            debuggable false
             minifyEnabled true // enables ProGuard
            // useProguard true    // obfuscate
             shrinkResources true

@@ -47,28 +47,28 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
             myListener.onItemClicked(list[position])
         }
        // holder.binding.rentButton.text = DateUtils.setSpannable(context as FragmentActivity,"Rent payment",0,4,12)
-      // val string = DateUtils.getMonthName(list[position].joinDate)
+      //  val string = DateUtils.getMonthName(list[position].joinDate)
         //Log.e("string: >>>>>>>","string: "+string)
        // holder.binding.textView4.text = string
         /*holder.binding.billButton.setOnClickListener {
             myListener.onItemBillClicked(list[position])
         }*/
 
-        /*val items1: List<String>  = list[position].joinDate.split("-")
-        val day = items1[0].toInt()
+        //val items1: List<String>  = list[position].joinDate.split("-")
+       // val day = items1[0].toInt()
 
 
-        val smpl = SimpleDateFormat("dd-M-yyyy")
+        /*val smpl = SimpleDateFormat("dd-M-yyyy")
         val cal2 = Calendar.getInstance()
         val date2 =cal2.time
         val current_date =smpl.format(date2)
         //Log.e("current_date>>>>>>>","current_date: $current_day")
         val items2: List<String>  = current_date.split("-")
         val day_current = items2[0].toInt()
-        val day_month = items2[1].toInt()*/
+        val day_month = items2[1].toInt()
 
         // alarm set
-        /*if (smpl.parse(list[position].joinDate).before(smpl.parse(current_date))){
+        if (smpl.parse(list[position].joinDate).before(smpl.parse(current_date))){
             Log.e("before","before")
         }else if (smpl.parse(list[position].joinDate).after(smpl.parse(current_date))){
             Log.e("else if ","else if ")
@@ -76,12 +76,12 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
         }else{
             Log.e("celse","else")
 
-        }*/
+        }
 
         if (list[position].status){
             holder.binding.cardView1.setBackgroundResource(R.drawable.background)
 
-        }
+        }*/
 
     }
 
@@ -100,7 +100,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
         calendar.set(Calendar.MINUTE,30)
         calendar.set(Calendar.SECOND,0)
         calendar.set(Calendar.MILLISECOND, 0)
-        calendar.set(Calendar.AM_PM, Calendar.AM)
+        calendar.set(Calendar.AM_PM, Calendar.PM)
 
         val intent = Intent(context, MyBroadcastReceiver::class.java)
         val id = System.currentTimeMillis().toInt()

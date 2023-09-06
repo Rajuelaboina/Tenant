@@ -4,7 +4,12 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.*
+import android.text.Editable
+import android.text.InputFilter
+import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -150,7 +155,9 @@ class HomeFragment : Fragment(), onItemClickListener, /*MenuProvider,*/ FabListe
             year = c.get(Calendar.YEAR)
             month = c.get(Calendar.MONTH)
             day = c.get(Calendar.DAY_OF_MONTH)
-            registrationBinding.editTextJoinDate.setText(day.toString() + "-" + (month + 1) + "-" + year)
+            val df = SimpleDateFormat("dd-MM-yyyy")
+            val formattedDate = df.format(c.time)
+            registrationBinding.editTextJoinDate.setText(formattedDate)
 
             registrationBinding.textView.text = DateUtils.setSpannable(requireActivity(),"Tenant Registration !",0,6,21)
 
@@ -177,8 +184,10 @@ class HomeFragment : Fragment(), onItemClickListener, /*MenuProvider,*/ FabListe
         }
         registrationBinding.buttonSave.setOnClickListener {
             if (position==-1){
+                // insert query
                 dataInsert()
             }else{
+                //update query
                dataUpdate()
 
             }
@@ -186,6 +195,30 @@ class HomeFragment : Fragment(), onItemClickListener, /*MenuProvider,*/ FabListe
             alertDialog.dismiss()
             DisplayAllUsers()
         }
+        registrationBinding.editTextAadharNumber.addTextChangedListener(object : TextWatcher{
+            private var current = ""
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                if (s.toString() != current) {
+                    val userInput = s.toString().replace(nonDigits,"")
+                    if (userInput.length <= 12) {
+                        current = userInput.chunked(4).joinToString("-")
+                        s.filters = arrayOfNulls<InputFilter>(0)
+                    }
+                    s.replace(0, s.length, current, 0, current.length)
+                }
+                //Log.e("EDITTEXT",""+current)
+
+            }
+
+        })
 
         alertDialog.show()
 
@@ -372,6 +405,8 @@ class HomeFragment : Fragment(), onItemClickListener, /*MenuProvider,*/ FabListe
     override fun fabClicked() {
         showDialog(-1)
     }
-
+    companion object {
+        private val nonDigits = Regex("[^\\d]")
+    }
 
 }

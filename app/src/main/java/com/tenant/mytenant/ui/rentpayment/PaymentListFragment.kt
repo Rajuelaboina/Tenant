@@ -33,6 +33,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import org.json.JSONArray
+import org.json.JSONObject
 import java.util.*
 
 
@@ -461,17 +463,17 @@ class PaymentListFragment : Fragment(), OnItemClicked, PowerWaterListener {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                var paidAmont = 0.0
+                var paidAmount = 0.0
                 if (s.toString().isNotEmpty()){
                     powerBillAmount =dialogPowerpaymentBinding.rentPaymentAmount.text.toString().toDouble()
-                    paidAmont = s!!.toString().toDouble()
-                    val due = powerBillAmount.minus(paidAmont)
+                    paidAmount = s!!.toString().toDouble()
+                    val due = powerBillAmount.minus(paidAmount)
                     dialogPowerpaymentBinding.dueAmount.setText(due.toString())
                     dialogPowerpaymentBinding.dueAmount.setTextColor(ContextCompat.getColor(requireContext(),
                         R.color.red
                     ))
                 }else{
-                    val due = powerBillAmount.minus(paidAmont)
+                    val due = powerBillAmount.minus(paidAmount)
                     dialogPowerpaymentBinding.dueAmount.setText(due.toString())
                 }
             }
@@ -511,6 +513,7 @@ class PaymentListFragment : Fragment(), OnItemClicked, PowerWaterListener {
 
             }
         }
+
     }
 
 }
