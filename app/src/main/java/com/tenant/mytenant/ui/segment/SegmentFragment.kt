@@ -3,6 +3,7 @@ package com.tenant.mytenant.ui.segment
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
+import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.tenant.mytenant.ui.power.PowerWaterFragment
@@ -36,32 +37,37 @@ class SegmentFragment : Fragment() {
     @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        userRegistration = arguments?.getSerializable("OK") as UserRegistration
-        payment = arguments?.getSerializable("PAYMENT") as Payment
+      //  userRegistration = arguments?.getSerializable("OK") as UserRegistration
+      //  payment = arguments?.getSerializable("PAYMENT") as Payment
 
-        bundle.putSerializable("OK",userRegistration)
+        /*bundle.putSerializable("OK",userRegistration)
         bundle.putSerializable("PAYMENT",payment)
 
         // first tiem enbled the radio button display the data
         if ( binding.paymentRadioButton.isChecked){
             loadPaymentRadioData()
-        }
+        }*/
         binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
             when(checkedId){
                 R.id.paymentRadioButton ->{
-                    loadPaymentRadioData()
+                  //  loadPaymentRadioData()
+                    group.animation
+                       /* .startAnimation(
+                        AnimationUtils.loadAnimation(
+                        context, R.anim.slide_to_right
+                    ));*/
                 }
                 R.id.currentBillRadioButton ->{
-                    binding.paymentRadioButton.setTextColor(ContextCompat.getColor(requireContext(),
+                    /*binding.paymentRadioButton.setTextColor(ContextCompat.getColor(requireContext(),
                         R.color.black
                     ))
                     binding.currentBillRadioButton.setTextColor(ContextCompat.getColor(requireContext(),
                         R.color.white
-                    ))
-                    val fragment = PowerWaterFragment()
+                    ))*/
+                   /* val fragment = PowerWaterFragment()
                     fragment.arguments = bundle
                     childFragmentManager.beginTransaction().replace(R.id.content,fragment).addToBackStack(null).commit()
-
+*/
                 }
             }
         }

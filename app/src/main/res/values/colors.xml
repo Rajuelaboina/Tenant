@@ -13,4 +13,7 @@
     <color name="ash">#F1F1F1</color>
     <color name="redLite">#EDA68F</color>
 
+    <color name="radio_button_selected_color">#ff33b5e5</color>
+    <color name="radio_button_unselected_color">#e0e0e0</color>
+
 </resources>
