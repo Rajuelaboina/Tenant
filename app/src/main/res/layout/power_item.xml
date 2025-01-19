@@ -25,7 +25,7 @@
 
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
@@ -42,6 +42,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/month_year"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/textView2"
@@ -49,6 +50,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{':'+model.month.substring(0,3)+' '+ '-'+ ' ' +model.year}"
                         android:layout_weight="1"
+                        android:textSize="16sp"
                         android:gravity="start|center"
                         android:textStyle="normal"/>
                 </LinearLayout>
@@ -65,6 +67,7 @@
                         android:layout_weight="0"
                         android:gravity="center"
                         android:text="Paid : "
+                        android:textSize="16sp"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/textViewJoinDate"
@@ -79,7 +82,7 @@
 
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="vertical">
@@ -98,6 +101,7 @@
                         android:layout_weight="0"
                         android:gravity="center"
                         android:text="Bill amount : "
+                        android:textSize="16sp"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/textView3"
@@ -120,6 +124,7 @@
                         android:layout_weight="0"
                         android:gravity="center"
                         android:text="Due : "
+                        android:textSize="16sp"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/textView4"

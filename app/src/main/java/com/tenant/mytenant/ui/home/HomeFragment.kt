@@ -48,7 +48,7 @@ class HomeFragment : Fragment(), onItemClickListener, /*MenuProvider,*/ FabListe
     private val binding get() = _binding!!
     lateinit var userList: List<UserRegistration>
     //var list  = ArrayList<UserRegistration>()
-    lateinit var registrationBinding :DialogRegistrationBinding
+    lateinit var registrationBinding : DialogRegistrationBinding
     private var dialog_Date = ""
     private var year = 0
     private var month = 0
@@ -96,6 +96,7 @@ class HomeFragment : Fragment(), onItemClickListener, /*MenuProvider,*/ FabListe
 
                             }
                             .setNegativeButton("Cancel") { dialog, which ->
+                                binding.progressBar.visibility = View.VISIBLE
                                 dialog.dismiss()
                                 // DisplayAllUsers()
                             }
@@ -287,7 +288,7 @@ class HomeFragment : Fragment(), onItemClickListener, /*MenuProvider,*/ FabListe
         viewModel.list.observe(this) { it ->
             // binding.recyclerView
             binding.progressBar.visibility = View.GONE
-            if (it.isNotEmpty()) {
+            if (it!=null) {
                 userList = it
                 viewModel.setAdapter(it)
             }

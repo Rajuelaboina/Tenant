@@ -10,6 +10,10 @@ interface UserRegistrationDao {
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertUser(userRegistration: UserRegistration)
+
+   /* @Query("SELECT EXISTS(SELECT * FROM rentPayment WHERE month = :month AND year = :year AND mobileNumber = :mobileNumber )")
+    fun isRecordExistsUserId(month: String,year:String,mobileNumber:String): Boolean*/
+
     @Query("SELECT * FROM Registration")
      fun getAllUsers(): List<UserRegistration>
 
@@ -49,8 +53,8 @@ interface UserRegistrationDao {
    @Query("SELECT EXISTS(SELECT * FROM powerWaterBill WHERE month = :month AND year = :year AND mobileNumber = :mobileNumber )")
    fun isRecordExistsPowerBill(month: String,year:String,mobileNumber:String): Boolean
 
-    @Query("SELECT * FROM powerWaterBill WHERE mobileNumber = :mobileNumber ORDER BY month")
-    fun getUserAllPowerPayments(mobileNumber: String):List<PowerWaterPayment>
+    @Query("SELECT * FROM powerWaterBill WHERE month = :month AND year = :year AND mobileNumber = :mobileNumber ")
+    fun getUserAllPowerPayments(month: String,year:String,mobileNumber:String):List<PowerWaterPayment>
 
     @Update
     fun powerBillUpdate(payment: PowerWaterPayment)

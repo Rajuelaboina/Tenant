@@ -87,22 +87,26 @@ class PaymentListFragment : Fragment(), OnItemClicked, PowerWaterListener {
                     .setTitle("Do you want Delete!")
                     .setPositiveButton("Yes") { dialog, which ->
                         //SharedPrefManager.getInstance(applicationContext).isLogedout()
-                        //  binding.progressBar.visibility = View.VISIBLE
+                          binding.progressBar2.visibility = View.VISIBLE
                         CoroutineScope(IO).launch {
                             UserDataBase.getInstance(requireActivity()).userDao().deletepayMonth(list[position].month)
                             UserDataBase.getInstance(requireActivity()).userDao().deletePowerMonth(list[position].month)
                         }
+
                     }
                     .setNegativeButton("Cancel") { dialog, which ->
+                        //binding.progressBar2.visibility = View.VISIBLE
                         dialog.dismiss()
                         // DisplayAllUsers()
                     }
                     .show()
-
                 Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                    binding.progressBar2.visibility = View.GONE
                     showAllPaymets()
+
                     // binding.progressBar.visibility = View.GONE
-                },3000)
+                },2000)
+
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
@@ -114,13 +118,14 @@ class PaymentListFragment : Fragment(), OnItemClicked, PowerWaterListener {
     private fun showAllPaymets() {
         viewModel.getAllPayments(requireContext(),mobileNumber)
         viewModel.list.observe(this) {
-            if (it.isNotEmpty()) {
+            if (it!=null) {
+                binding.progressBar2.visibility = View.INVISIBLE
                 binding.textViewNotFound.visibility = View.INVISIBLE
               //  binding.listpaymentLinear.visibility = View.VISIBLE
                 viewModel.setAdapter(it)
                 list = it as ArrayList<Payment>
             }else{
-
+                binding.progressBar2.visibility = View.INVISIBLE
                 binding.textViewNotFound.visibility = View.VISIBLE
             }
             //  --  fire store display data ---------------//

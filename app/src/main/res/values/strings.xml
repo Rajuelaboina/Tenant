@@ -36,8 +36,9 @@
     <string name="title_notifications">Power List</string>
     <string name="month">Month :</string>
     <string name="rent_amount">Rent amount :</string>
-    <string name="paid_amount">Paid amount :</string>
-    <string name="due_amount">Due amount :</string>
+    <string name="paid_amount">Paid amount    \u20B9   = </string>
+    <string name="due_amount">Due amount    \u20B9   = </string>
     <string name="save">Save</string>
-    <string name="month_year"><![CDATA[Month&Year]]></string>
+    <string name="month_year"><![CDATA[Month&Year]]>     :  </string>
+    <string name="bill_amount">Bill amount      \u20B9   = </string>
 </resources>
